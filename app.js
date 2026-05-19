@@ -1,3 +1,22 @@
+// 알림 권한 요청
+if (Notification.permission !== "default") {
+  Notification.requestPermission();
+}
+
+// 알림 체크 (1분마다)
+setInterval(function () {
+  const now = new Date();
+  const currentTime = now.getHours().toString().padStart(2, "0") + ":" + now.getMinutes().toString().padStart(2, "0");
+
+  for (let i = 0; i < medicines.length; i++) {
+    if (medicines[i].alarmOn && !medicines[i].checked && medicines[i].time === currentTime) {
+      new Notification("💊 복용 시간이에요!", {
+        body: medicines[i].name + " " + medicines[i].dose + " 복용할 시간입니다."
+      });
+    }
+  }
+}, 60000);
+
 let medicines = JSON.parse(localStorage.getItem("medicines")) || [];
 
 function save() {
@@ -57,6 +76,14 @@ function displayList() {
       label.style.color = "gray";
     }
 
+    const alarmBtn = document.createElement("button");
+    alarmBtn.textContent = medicines[i].alarmOn ? "🔔" : "🔕";
+    alarmBtn.onclick = function () {
+      medicines[i].alarmOn = !medicines[i].alarmOn;
+      save();
+      displayList();
+    };
+
     const deleteBtn = document.createElement("button");
     deleteBtn.textContent = "삭제";
     deleteBtn.onclick = function () {
@@ -67,6 +94,8 @@ function displayList() {
 
     item.appendChild(checkbox);
     item.appendChild(label);
+    item.appendChild(document.createTextNode("  "));
+    item.appendChild(alarmBtn);
     item.appendChild(document.createTextNode("  "));
     item.appendChild(deleteBtn);
     list.appendChild(item);
