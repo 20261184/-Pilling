@@ -93,6 +93,7 @@ function displayList() {
 
       // 체크 상태 저장 및 화면 갱신
       medicines[i].checked = checkbox.checked;
+      medicines[i].alarmOn = false;
       save();
       displayList();
     };
