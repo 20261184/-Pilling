@@ -1,4 +1,16 @@
 // =====================
+// 데이터 관리
+// =====================
+
+// localStorage에서 저장된 약 목록 불러오기 (없으면 빈 배열로 시작)
+let medicines = JSON.parse(localStorage.getItem("medicines")) || [];
+
+// 현재 medicines 배열을 localStorage에 저장
+function save() {
+  localStorage.setItem("medicines", JSON.stringify(medicines));
+}
+
+// =====================
 // 알림 권한 설정
 // =====================
 
@@ -22,18 +34,6 @@ setInterval(function () {
     }
   }
 }, 60000);
-
-// =====================
-// 데이터 관리
-// =====================
-
-// localStorage에서 저장된 약 목록 불러오기 (없으면 빈 배열로 시작)
-let medicines = JSON.parse(localStorage.getItem("medicines")) || [];
-
-// 현재 medicines 배열을 localStorage에 저장
-function save() {
-  localStorage.setItem("medicines", JSON.stringify(medicines));
-}
 
 // =====================
 // 약 추가
