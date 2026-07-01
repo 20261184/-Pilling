@@ -253,7 +253,7 @@ window.testFirebaseSave = testFirebaseSave;
 // AI 성분 분석
 // =====================
 
-const GEMINI_API_KEY = "AQ.Ab8RN6IEKylIMeT5QoNLyl3x5z40Ir4YK-Q7rEsDJsLB9vEF4A";
+const GEMINI_API_KEY = "여기에_키_입력";
 
 /**
  * 약 이름을 받아 Gemini AI로 성분 분석 결과 반환
