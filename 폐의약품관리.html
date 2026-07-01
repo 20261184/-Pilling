@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pilling</title>
+<style>
+  :root{
+    --green-900:#1f4d36;
+    --green-700:#2f7a4f;
+    --green-600:#3c9461;
+    --green-100:#e7f3ea;
+    --green-50:#f4faf6;
+    --paper:#fbfaf6;
+    --ink:#1b2620;
+    --ink-soft:#5b6a60;
+    --line:#dde7df;
+    --danger:#c4502e;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:"Pretendard","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+    background:var(--paper);
+    color:var(--ink);
+    line-height:1.55;
+  }
+  .wrap{max-width:1080px;margin:0 auto;padding:0 24px;}
+
+  /* ---- 상단 경고 영역 ---- */
+  .warn-band{
+    background:var(--green-900);
+    padding:48px 0 64px;
+  }
+  .warn-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:20px;
+  }
+  .warn-card{
+    background:rgba(255,255,255,0.06);
+    border:1px solid rgba(255,255,255,0.12);
+    border-radius:16px;
+    padding:24px 26px;
+    color:#eef5f0;
+  }
+  .warn-card .tag{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-weight:700;
+    font-size:1.05rem;
+    margin-bottom:10px;
+    color:#ffe2c9;
+  }
+  .warn-card .icon{
+    width:30px;height:30px;border-radius:50%;
+    background:rgba(255,255,255,0.12);
+    display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;
+  }
+  .warn-card p{margin:4px 0;color:#cfe0d4;font-size:0.95rem;}
+  .warn-card .lead{font-weight:700;color:#fff;}
+
+  /* ---- 메인 히어로 ---- */
+  .hero{
+    padding:64px 0 40px;
+    position:relative;
+    overflow:hidden;
+  }
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:8px;
+    font-size:0.9rem;font-weight:700;color:var(--green-700);
+    background:var(--green-100);
+    padding:6px 14px;border-radius:999px;
+    margin-bottom:22px;
+  }
+  .hero-grid{
+    display:grid;
+    grid-template-columns:1.3fr 1fr;
+    gap:30px;
+    align-items:center;
+  }
+  .hero h1{
+    font-size:2.6rem;
+    line-height:1.28;
+    margin:0 0 18px;
+    color:var(--green-900);
+    letter-spacing:-0.02em;
+  }
+  .hero h1 span{color:var(--green-600);}
+  .hero p.sub{
+    font-size:1.08rem;
+    color:var(--ink-soft);
+    max-width:520px;
+    margin:0;
+  }
+  .hero-art{
+    display:flex;justify-content:center;align-items:center;
+  }
+  .hero-art svg{width:100%;max-width:340px;height:auto;}
+
+  /* ---- 3카드 ---- */
+  .feature-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:22px;
+    margin:46px 0 64px;
+  }
+  .feature-card{
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:18px;
+    padding:30px 26px;
+    box-shadow:0 1px 2px rgba(20,40,28,0.04);
+  }
+  .feature-card .circle{
+    width:54px;height:54px;border-radius:50%;
+    background:var(--green-100);
+    display:flex;align-items:center;justify-content:center;
+    margin-bottom:18px;
+  }
+  .feature-card h3{
+    margin:0 0 10px;
+    font-size:1.18rem;
+    color:var(--green-900);
+  }
+  .feature-card p{
+    margin:0 0 6px;
+    color:var(--ink-soft);
+    font-size:0.95rem;
+  }
+  .feature-card p.strong{
+    color:var(--green-700);
+    font-weight:600;
+  }
+
+  /* ---- 두 컬럼: 지도 / 처리방법 ---- */
+  .two-col{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:26px;
+    margin-bottom:80px;
+    align-items:start;
+  }
+  .panel{
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:18px;
+    padding:28px;
+  }
+  .panel-head{margin-bottom:18px;}
+  .panel-head h2{
+    display:flex;align-items:center;gap:8px;
+    font-size:1.25rem;
+    margin:0 0 6px;
+    color:var(--green-900);
+  }
+  .panel-head p{
+    margin:0;color:var(--ink-soft);font-size:0.92rem;
+  }
+
+  /* 지도 영역 */
+  .map-area{
+    position:relative;
+    border-radius:14px;
+    overflow:hidden;
+    height:280px;
+    background:
+      linear-gradient(0deg, rgba(60,148,97,0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(60,148,97,0.06) 1px, transparent 1px),
+      #eef6f0;
+    background-size:28px 28px;
+    margin-bottom:16px;
+    border:1px solid var(--line);
+  }
+  .map-area .river{
+    position:absolute;top:0;right:18%;width:14%;height:100%;
+    background:#cfe6ee;opacity:0.7;
+    transform:skewX(-8deg);
+  }
+  .pin{
+    position:absolute;
+    width:30px;height:30px;
+    background:var(--green-700);
+    border:3px solid #fff;
+    border-radius:50% 50% 50% 0;
+    transform:rotate(-45deg);
+    box-shadow:0 2px 5px rgba(0,0,0,0.25);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .pin svg{transform:rotate(45deg);width:14px;height:14px;}
+  .pin.p1{top:18%;left:32%;}
+  .pin.p2{top:48%;left:55%;}
+  .pin.p3{top:42%;left:74%;}
+  .pin.p4{top:78%;left:18%;}
+
+  .map-placeholder-note{
+    position:absolute;
+    bottom:10px;left:10px;
+    background:rgba(255,255,255,0.92);
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:5px 10px;
+    font-size:0.74rem;
+    color:var(--ink-soft);
+  }
+
+  .loc-list{
+    list-style:none;margin:0 0 16px;padding:0;
+    display:grid;gap:10px;
+  }
+  .loc-list li{
+    display:flex;justify-content:space-between;align-items:center;
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:12px 14px;
+    font-size:0.92rem;
+  }
+  .loc-list li .name{font-weight:600;color:var(--ink);}
+  .loc-list li .dist{color:var(--ink-soft);font-size:0.85rem;}
+
+  .btn-primary{
+    display:flex;align-items:center;justify-content:center;gap:8px;
+    width:100%;
+    background:var(--green-700);
+    color:#fff;
+    border:none;
+    border-radius:12px;
+    padding:14px;
+    font-size:1rem;
+    font-weight:700;
+    cursor:pointer;
+    transition:background .15s ease, transform .15s ease;
+  }
+  .btn-primary:hover{background:var(--green-900);transform:translateY(-1px);}
+  .btn-primary:focus-visible{outline:3px solid var(--green-600);outline-offset:2px;}
+  .btn-note{
+    text-align:center;font-size:0.78rem;color:var(--ink-soft);margin-top:8px;
+  }
+
+  /* 처리 방법 리스트 */
+  .method-list{list-style:none;margin:0;padding:0;display:grid;gap:0;}
+  .method-list li{
+    display:flex;align-items:center;gap:16px;
+    padding:16px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .method-list li:last-of-type{border-bottom:none;}
+  .method-icon{
+    width:42px;height:42px;border-radius:10px;
+    background:var(--green-100);
+    display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;
+  }
+  .method-body{flex:1;}
+  .method-body .m-title{font-weight:700;color:var(--green-900);font-size:0.98rem;margin-bottom:3px;}
+  .method-body .m-desc{color:var(--ink-soft);font-size:0.85rem;}
+  .method-action{
+    display:flex;align-items:center;gap:6px;
+    border:1px solid var(--line);
+    border-radius:999px;
+    padding:7px 14px;
+    font-size:0.8rem;
+    color:var(--green-700);
+    font-weight:600;
+    white-space:nowrap;
+    background:#fff;
+    cursor:pointer;
+  }
+  .method-action:hover{background:var(--green-50);}
+
+  .tip-row{
+    margin-top:18px;
+    display:flex;align-items:flex-start;gap:10px;
+    background:var(--green-50);
+    border:1px solid var(--green-100);
+    border-radius:12px;
+    padding:14px 16px;
+    font-size:0.85rem;
+    color:var(--green-900);
+  }
+  .tip-badge{
+    flex-shrink:0;
+    background:var(--green-700);
+    color:#fff;
+    font-size:0.68rem;
+    font-weight:800;
+    padding:3px 8px;
+    border-radius:6px;
+    letter-spacing:0.04em;
+  }
+
+  footer{
+    border-top:1px solid var(--line);
+    padding:28px 0 50px;
+    text-align:center;
+    color:var(--ink-soft);
+    font-size:0.85rem;
+  }
+
+  @media (max-width:880px){
+    .hero-grid{grid-template-columns:1fr;}
+    .hero-art{order:-1;}
+    .feature-grid{grid-template-columns:1fr;}
+    .two-col{grid-template-columns:1fr;}
+    .warn-grid{grid-template-columns:1fr;}
+    .hero h1{font-size:2rem;}
+  }
+</style>
+</head>
+<body>
+
+<main class="wrap">
+
+  <section class="hero">
+    <span class="eyebrow">🌿 폐의약품 처리</span>
+    <div class="hero-grid">
+      <div>
+        <h1>올바른 폐의약품 처리,<br>우리의 건강과 <span>환경</span>을 지키는 첫걸음입니다.</h1>
+        <p class="sub">집에서 남은 약, 그냥 버리지 마세요. 작은 실천이 깨끗한 환경과 안전한 미래를 만듭니다.</p>
+      </div>
+      <div class="hero-art">
+        <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="100" cy="100" r="70" fill="#cfe6da"/>
+          <path d="M40 110 a60 60 0 0 1 120 0" fill="#9fcdaf"/>
+          <rect x="120" y="120" width="46" height="56" rx="8" fill="#2f7a4f"/>
+          <rect x="126" y="108" width="34" height="14" rx="4" fill="#1f4d36"/>
+          <circle cx="143" cy="146" r="10" fill="#fff" opacity="0.4"/>
+          <path d="M60 70 q14 -18 28 0" stroke="#2f7a4f" stroke-width="4" fill="none" stroke-linecap="round"/>
+          <path d="M75 50 q14 -18 28 0" stroke="#3c9461" stroke-width="4" fill="none" stroke-linecap="round"/>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <section class="feature-grid">
+    <div class="feature-card">
+      <div class="circle">🌱</div>
+      <h3>왜 처리해야 하나요?</h3>
+      <p>남은 약을 하수구나 쓰레기통에 버리면 토양과 수질을 오염시키고, 생태계와 우리의 건강을 위협할 수 있습니다.</p>
+      <p class="strong">올바른 처리가 환경 오염과 약물 오남용을 예방합니다.</p>
+    </div>
+    <div class="feature-card">
+      <div class="circle">🛡️</div>
+      <h3>얼마나 중요한가요?</h3>
+      <p>1g의 약물 성분이 최대 1톤의 물을 오염시킬 수 있습니다.</p>
+      <p class="strong">항생제, 호르몬제 등은 생태계 교란과 내성균 발생의 원인이 되어 미래 세대의 건강을 위험합니다.</p>
+    </div>
+    <div class="feature-card">
+      <div class="circle">👥</div>
+      <h3>우리 모두의 책임</h3>
+      <p>가정에서부터 실천하는 올바른 폐의약품 처리는 더 나은 환경과 건강한 사회를 만드는</p>
+      <p class="strong">가장 쉽고 확실한 방법입니다.</p>
+    </div>
+  </section>
+
+  <section class="two-col">
+    <div class="panel">
+      <div class="panel-head">
+        <h2>📍 우리 주변 폐의약품 수거함 찾기</h2>
+        <p>집 주변의 폐의약품 수거함 위치를 확인하고 편리하게 이용해보세요.</p>
+      </div>
+
+      <div class="map-area" id="map-area">
+        <div class="river"></div>
+        <div class="pin p1"><svg viewBox="0 0 24 24" fill="#fff"><path d="M12 2a6 6 0 00-6 6c0 5 6 14 6 14s6-9 6-14a6 6 0 00-6-6z"/></svg></div>
+        <div class="pin p2"><svg viewBox="0 0 24 24" fill="#fff"><path d="M12 2a6 6 0 00-6 6c0 5 6 14 6 14s6-9 6-14a6 6 0 00-6-6z"/></svg></div>
+        <div class="pin p3"><svg viewBox="0 0 24 24" fill="#fff"><path d="M12 2a6 6 0 00-6 6c0 5 6 14 6 14s6-9 6-14a6 6 0 00-6-6z"/></svg></div>
+        <div class="pin p4"><svg viewBox="0 0 24 24" fill="#fff"><path d="M12 2a6 6 0 00-6 6c0 5 6 14 6 14s6-9 6-14a6 6 0 00-6-6z"/></svg></div>
+        <div class="map-placeholder-note">지도 연동은 추후 사용자 위치 기반으로 구현 예정입니다</div>
+      </div>
+
+      <ul class="loc-list">
+        <li><span class="name">○○○ 보건소</span><span class="dist">도보 5분 · 0.4km</span></li>
+        <li><span class="name">○○○ 약국</span><span class="dist">도보 8분 · 0.6km</span></li>
+        <li><span class="name">○○○ 주민센터</span><span class="dist">도보 10분 · 0.8km</span></li>
+        <li><span class="name">○○○ 보건지소</span><span class="dist">차량 5분 · 1.2km</span></li>
+      </ul>
+
+      <button class="btn-primary" id="locate-btn">⌖ 내 위치 주변 수거함 찾기</button>
+      <p class="btn-note">버튼 클릭 시 위치 권한 허용이 필요합니다. (기능은 추후 지도 연동 예정)</p>
+    </div>
+
+    <div class="panel">
+      <div class="panel-head">
+        <h2>🗑 약물별 올바른 처리 방법</h2>
+        <p>약을 종류에 따라 처리 방법이 다를 수 있습니다. 아래 가이드를 참고해주세요.</p>
+      </div>
+
+      <ul class="method-list">
+        <li>
+          <div class="method-icon">💊</div>
+          <div class="method-body">
+            <div class="m-title">알약 / 캡슐</div>
+            <div class="m-desc">포장 그대로 수거함에 넣어주세요. 포장지가 없어도 괜찮습니다.</div>
+          </div>
+          <button class="method-action">🗑 수거함 배출</button>
+        </li>
+        <li>
+          <div class="method-icon">🧴</div>
+          <div class="method-body">
+            <div class="m-title">가루약 / 시럽</div>
+            <div class="m-desc">투명한 용기에 담아 내용물이 새지 않게 한 후 수거함에 넣어주세요.</div>
+          </div>
+          <button class="method-action">🗑 수거함 배출</button>
+        </li>
+        <li>
+          <div class="method-icon">🧪</div>
+          <div class="method-body">
+            <div class="m-title">연고 / 크림 / 파스</div>
+            <div class="m-desc">용기째 수거함에 넣어주세요. 내용물을 비울 필요는 없습니다.</div>
+          </div>
+          <button class="method-action">🗑 수거함 배출</button>
+        </li>
+        <li>
+          <div class="method-icon">💉</div>
+          <div class="method-body">
+            <div class="m-title">주사기 / 앰플</div>
+            <div class="m-desc">개봉하지 않은 상태로 수거함에 넣어주세요. (바늘은 제거하지 않아도 됩니다.)</div>
+          </div>
+          <button class="method-action">🗑 수거함 배출</button>
+        </li>
+        <li>
+          <div class="method-icon">💨</div>
+          <div class="method-body">
+            <div class="m-title">흡입제 / 스프레이</div>
+            <div class="m-desc">캡을 닫고 수거함에 넣어주세요. 가스는 완전히 사용하지 않아도 됩니다.</div>
+          </div>
+          <button class="method-action">🗑 수거함 배출</button>
+        </li>
+      </ul>
+
+      <div class="tip-row">
+        <span class="tip-badge">TIP</span>
+        <span>유통기한이 지난 약, 복용을 중단한 약 등 모든 폐의약품이 수거 대상입니다.</span>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  © 올바른 폐의약품 처리 캠페인 · 우리의 건강과 환경을 지키는 작은 실천
+</footer>
+
+<script>
+  document.getElementById('locate-btn').addEventListener('click', function(){
+    if(navigator.geolocation){
+      navigator.geolocation.getCurrentPosition(
+        function(pos){
+          alert('위치 확인됨: ' + pos.coords.latitude.toFixed(4) + ', ' + pos.coords.longitude.toFixed(4) + '\n(지도 연동 기능은 추후 구현 예정입니다)');
+        },
+        function(){
+          alert('위치 정보를 가져올 수 없습니다. (지도 연동 기능은 추후 구현 예정입니다)');
+        }
+      );
+    } else {
+      alert('이 브라우저는 위치 정보를 지원하지 않습니다.');
+    }
+  });
+</script>
+
+</body>
+</html>
