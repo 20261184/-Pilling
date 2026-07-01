@@ -248,3 +248,99 @@ async function testFirebaseSave() {
 }
 
 window.testFirebaseSave = testFirebaseSave;
+
+// =====================
+// AI 성분 분석
+// =====================
+
+const GEMINI_API_KEY = "AQ.Ab8RN6IEKylIMeT5QoNLyl3x5z40Ir4YK-Q7rEsDJsLB9vEF4A";
+
+/**
+ * 약 이름을 받아 Gemini AI로 성분 분석 결과 반환
+ * @param {string} medicineName - 분석할 약 이름
+ * @returns {string} AI 분석 결과
+ */
+async function analyzeMedicine(medicineName) {
+  const prompt = `약 이름: ${medicineName}
+다음 항목을 간단하게 알려주세요:
+1. 주요 성분
+2. 효능
+3. 과복용 시 위험
+4. 주의사항`;
+
+  const response = await fetch(
+    `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        contents: [{ parts: [{ text: prompt }] }]
+      })
+    }
+  );
+
+  const data = await response.json();
+  return data.candidates[0].content.parts[0].text;
+}
+
+window.analyzeMedicine = analyzeMedicine;
+
+async function testAI() {
+  const resultDiv = document.getElementById("aiResult");
+  resultDiv.textContent = "분석 중...";
+
+  const result = await analyzeMedicine("타이레놀");
+  resultDiv.textContent = result;
+}
+window.testAI = testAI;
+
+// =====================
+// 위치 서비스 (카카오맵)
+// =====================
+
+/**
+ * 현재 위치 기반으로 주변 약국을 지도에 표시
+ */
+function loadMap() {
+  if (!window.kakao || !window.kakao.maps) {
+    alert("지도 로딩 중입니다. 잠시 후 다시 시도해주세요!");
+    return;
+  }
+
+  navigator.geolocation.getCurrentPosition(function (position) {
+    const lat = position.coords.latitude;
+    const lng = position.coords.longitude;
+
+    const container = document.getElementById("map");
+    const options = {
+      center: new window.kakao.maps.LatLng(lat, lng),
+      level: 3
+    };
+    const map = new window.kakao.maps.Map(container, options);
+
+    const marker = new window.kakao.maps.Marker({
+      position: new window.kakao.maps.LatLng(lat, lng)
+    });
+    marker.setMap(map);
+
+    const ps = new window.kakao.maps.services.Places();
+    ps.keywordSearch("약국", function (data, status) {
+      if (status === window.kakao.maps.services.Status.OK) {
+        for (let i = 0; i < data.length; i++) {
+          const pharmMarker = new window.kakao.maps.Marker({
+            position: new window.kakao.maps.LatLng(data[i].y, data[i].x),
+            map: map
+          });
+          const infowindow = new window.kakao.maps.InfoWindow({
+            content: `<div style="padding:5px;">${data[i].place_name}</div>`
+          });
+          window.kakao.maps.event.addListener(pharmMarker, "click", function () {
+            infowindow.open(map, pharmMarker);
+          });
+        }
+      }
+    }, { location: new window.kakao.maps.LatLng(lat, lng) });
+  });
+}
+
+window.loadMap = loadMap;

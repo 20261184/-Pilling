@@ -12,9 +12,15 @@
   <input type="time" id="time">
   <button onclick="addMedicine()">추가</button>
   <button onclick="testFirebaseSave()">Firebase 저장 테스트</button>
+  <button onclick="testAI()">AI 분석 테스트</button>
+  <div id="aiResult" style="margin-top:20px; white-space:pre-wrap;"></div>
+  <button onclick="loadMap()">주변 약국 찾기</button>
 
   <ul id="list"></ul>
 
+  <div id="map" style="width:100%; height:400px; margin-top:20px;"></div>
+
+  <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=23b911308f74d73f007830aa87ca287a&libraries=services"></script>
   <script type="module" src="app.js"></script>
 </body>
 </html>
