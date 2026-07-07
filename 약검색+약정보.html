@@ -28,10 +28,49 @@
     background:linear-gradient(180deg,#eaf6ec 0%,#f6fbf4 35%,#ffffff 100%);
     color:var(--text-dark);
   }
+
+  /* =================== 공통 상단 헤더 =================== */
+  .top-header{
+    max-width:1180px;
+    margin:0 auto;
+    padding:30px 32px 0;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+  }
+  .logo-mark{
+    font-size:26px;
+    font-weight:800;
+    color:var(--green-dark);
+    letter-spacing:-0.02em;
+  }
+  .nav-center{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-size:16px;
+    font-weight:700;
+    color:var(--green-mid);
+  }
+  .fighting-badge{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    background:#fff;
+    border:1px solid #eef2ee;
+    border-radius:999px;
+    padding:10px 20px;
+    font-size:14.5px;
+    font-weight:700;
+    color:var(--green-dark);
+    box-shadow:0 8px 20px -14px rgba(31,107,58,0.35);
+    white-space:nowrap;
+  }
+
   .wrap{
     max-width:1180px;
     margin:0 auto;
-    padding:64px 32px 80px;
+    padding:32px 32px 80px;
   }
   .eyebrow{
     display:flex;
@@ -239,7 +278,7 @@
 
   /* feature banner */
   .banner{
-    margin-top:64px;
+    margin-top:0;
     background:linear-gradient(135deg,#f5fbf4,#eaf6ec);
     border:1px solid #e3efe2;
     border-radius:28px;
@@ -344,7 +383,7 @@
 
   .hero-row{
     display:grid;
-    grid-template-columns:260px 1fr 280px;
+    grid-template-columns:260px 1fr;
     gap:36px;
     align-items:start;
   }
@@ -363,7 +402,9 @@
   .basic-info-box{
     background:var(--green-pale);
     border-radius:20px;
-    padding:22px 22px;
+    padding:22px 16px;
+    margin-top:28px;
+    width:100%;
   }
   .basic-info-box h4{
     margin:0 0 16px;
@@ -371,13 +412,19 @@
     font-weight:800;
     color:var(--green-dark);
   }
+  .bi-grid{
+    display:flex;
+    flex-wrap:wrap;
+    gap:18px 28px;
+  }
   .bi-row{
     display:flex;
     align-items:flex-start;
     gap:10px;
-    margin-bottom:14px;
+    margin-bottom:0;
+    flex:1 1 150px;
+    min-width:150px;
   }
-  .bi-row:last-child{margin-bottom:0;}
   .bi-row .bi-ico{
     flex-shrink:0;
     width:22px;height:22px;
@@ -469,6 +516,8 @@
   }
   .item.good .ico{background:var(--green-pale);color:var(--green-mid);}
   .item.ok .ico{background:var(--green-pale);color:var(--green-mid);}
+  .item.dot .ico{background:var(--green-pale);color:var(--green-mid);}
+  .item.check .ico{background:var(--green-pale);color:var(--green-mid);}
   .item.caution .ico{background:var(--warn-bg);color:var(--warn-text);}
   .item.bad .ico{background:var(--warn-bg);color:var(--warn-text);}
   .item .item-text b{
@@ -487,19 +536,21 @@
   .precaution-list{list-style:none; margin:0; padding:0;}
   .precaution-list li{
     position:relative;
-    padding-left:16px;
+    padding-left:20px;
     margin-bottom:16px;
     font-size:13px;
     line-height:1.6;
     color:var(--text-mid);
   }
   .precaution-list li::before{
-    content:"";
+    content:"!";
     position:absolute;
-    left:0; top:7px;
-    width:5px;height:5px;
-    border-radius:50%;
-    background:var(--green-mid);
+    left:0; top:-1px;
+    width:14px;height:14px;
+    color:var(--warn-text);
+    font-weight:800;
+    font-size:13px;
+    line-height:1.6;
   }
 
   .bottom-boxes{
@@ -533,10 +584,10 @@
   }
   .overdose-box .ico{color:var(--warn-text);}
   .consult-box .ico{color:var(--green-dark);}
-  .overdose-box b{display:block; color:var(--warn-text); font-size:15px; margin-bottom:6px;}
-  .consult-box b{display:block; color:var(--green-dark); font-size:15px; margin-bottom:6px;}
-  .overdose-box p{margin:0 0 6px; font-size:14px; color:#7a2c24; line-height:1.65;}
-  .consult-box p{margin:0 0 6px; font-size:14px; color:#27543a; line-height:1.65;}
+  .overdose-box b{display:block; color:var(--warn-text); font-size:18px; margin-bottom:8px;}
+  .consult-box b{display:block; color:var(--green-dark); font-size:18px; margin-bottom:8px;}
+  .overdose-box p{margin:0 0 6px; font-size:16px; color:#7a2c24; line-height:1.7;}
+  .consult-box p{margin:0 0 6px; font-size:16px; color:#27543a; line-height:1.7;}
   .overdose-box .strong-line, .consult-box .strong-line{font-weight:700;}
 
   @media (max-width:760px){
@@ -562,10 +613,15 @@
 </head>
 <body>
 
+<!-- =================== 공통 상단 헤더 =================== -->
+<div class="top-header">
+  <div class="logo-mark">Pilling</div>
+  <div class="nav-center">🌿 약 검색</div>
+  <div class="fighting-badge">🌿 오늘도 파이팅!</div>
+</div>
+
 <!-- =================== 검색(랜딩) 화면 =================== -->
 <div class="wrap" id="searchPage">
-
-  <div class="eyebrow">약 검색 · 정보</div>
 
   <div class="hero">
     <div class="hero-text">
@@ -587,11 +643,79 @@
     </div>
   </div>
 
-  <div class="search-card">
+  <div class="trend-section" style="margin-top:40px;">
+    <div class="banner">
+      <div class="banner-illust">
+        <svg viewBox="0 0 200 220" fill="none">
+          <ellipse cx="100" cy="200" rx="70" ry="14" fill="#dceedb"/>
+          <rect x="55" y="60" width="90" height="120" rx="20" fill="#eaf6ec" stroke="#bfe6c4" stroke-width="3"/>
+          <rect x="55" y="60" width="90" height="46" rx="20" fill="#7fce8c"/>
+          <circle cx="100" cy="38" r="10" fill="#bfe6c4"/>
+          <rect x="92" y="20" width="16" height="26" rx="6" fill="#bfe6c4"/>
+          <path d="M85 130 h30 M100 115 v30" stroke="#2f8f4e" stroke-width="8" stroke-linecap="round"/>
+          <circle cx="78" cy="150" r="10" fill="#f6c95c"/>
+          <circle cx="120" cy="155" r="7" fill="#9fdaa8"/>
+          <ellipse cx="30" cy="90" rx="16" ry="8" fill="#9fdaa8" transform="rotate(20 30 90)"/>
+          <ellipse cx="170" cy="100" rx="16" ry="8" fill="#bfe6c4" transform="rotate(-20 170 100)"/>
+        </svg>
+      </div>
+
+      <div class="banner-content">
+        <h2>약을 검색해보세요</h2>
+        <p>약 이름을 검색하면 해당 약의 상세 정보와<br>함께 복용해도 되는 약/영양제를 확인할 수 있어요.</p>
+
+        <div class="feature-row">
+          <div class="feature">
+            <div class="feature-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg>
+            </div>
+            <div>
+              <h4>약 정보</h4>
+              <span>성분, 효능, 복용법, 주의사항</span>
+            </div>
+          </div>
+
+          <div class="feature">
+            <div class="feature-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            </div>
+            <div>
+              <h4>상호작용 체크</h4>
+              <span>다른 약과의 상호작용 확인</span>
+            </div>
+          </div>
+
+          <div class="feature">
+            <div class="feature-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-11V5l-8-3-8 3v6c0 7 8 11 8 11z"/><polyline points="9 12 11 14 15 10"/></svg>
+            </div>
+            <div>
+              <h4>함께 복용 가능 성분</h4>
+              <span>함께 먹어도 되는 약/영양제 추천</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="banner-side-illust">
+        <svg viewBox="0 0 160 180" fill="none">
+          <rect x="20" y="20" width="120" height="150" rx="14" fill="#ffffff" stroke="#bfe6c4" stroke-width="3"/>
+          <rect x="36" y="40" width="88" height="10" rx="4" fill="#cdeacf"/>
+          <rect x="36" y="60" width="60" height="8" rx="4" fill="#e3f3e6"/>
+          <circle cx="115" cy="125" r="24" fill="#dff0e0"/>
+          <path d="M104 125 l8 8 16 -18" stroke="#2f8f4e" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          <rect x="36" y="90" width="50" height="8" rx="4" fill="#e3f3e6"/>
+          <rect x="36" y="105" width="40" height="8" rx="4" fill="#e3f3e6"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="search-card" style="margin-top:32px;">
     <span class="icon">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
     </span>
-    <input type="text" id="searchInput" placeholder="어떤 약을 검색하시겠어요? (예: 인데놀, 타이레놀, 아스피린)" />
+    <input type="text" id="searchInput" placeholder="어떤 약을 검색하시겠어요? (예: 타이레놀)" />
     <button class="search-btn" id="searchBtn">검색</button>
   </div>
   <div class="not-found-msg" id="notFoundMsg"></div>
@@ -658,72 +782,6 @@
     </div>
   </div>
 
-  <div class="banner">
-    <div class="banner-illust">
-      <svg viewBox="0 0 200 220" fill="none">
-        <ellipse cx="100" cy="200" rx="70" ry="14" fill="#dceedb"/>
-        <rect x="55" y="60" width="90" height="120" rx="20" fill="#eaf6ec" stroke="#bfe6c4" stroke-width="3"/>
-        <rect x="55" y="60" width="90" height="46" rx="20" fill="#7fce8c"/>
-        <circle cx="100" cy="38" r="10" fill="#bfe6c4"/>
-        <rect x="92" y="20" width="16" height="26" rx="6" fill="#bfe6c4"/>
-        <path d="M85 130 h30 M100 115 v30" stroke="#2f8f4e" stroke-width="8" stroke-linecap="round"/>
-        <circle cx="78" cy="150" r="10" fill="#f6c95c"/>
-        <circle cx="120" cy="155" r="7" fill="#9fdaa8"/>
-        <ellipse cx="30" cy="90" rx="16" ry="8" fill="#9fdaa8" transform="rotate(20 30 90)"/>
-        <ellipse cx="170" cy="100" rx="16" ry="8" fill="#bfe6c4" transform="rotate(-20 170 100)"/>
-      </svg>
-    </div>
-
-    <div class="banner-content">
-      <h2>약을 검색해보세요</h2>
-      <p>약 이름을 검색하면 해당 약의 상세 정보와<br>함께 복용해도 되는 약/영양제를 확인할 수 있어요.</p>
-
-      <div class="feature-row">
-        <div class="feature">
-          <div class="feature-icon">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg>
-          </div>
-          <div>
-            <h4>약 정보</h4>
-            <span>성분, 효능, 복용법, 주의사항</span>
-          </div>
-        </div>
-
-        <div class="feature">
-          <div class="feature-icon">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-          </div>
-          <div>
-            <h4>상호작용 체크</h4>
-            <span>다른 약과의 상호작용 확인</span>
-          </div>
-        </div>
-
-        <div class="feature">
-          <div class="feature-icon">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-11V5l-8-3-8 3v6c0 7 8 11 8 11z"/><polyline points="9 12 11 14 15 10"/></svg>
-          </div>
-          <div>
-            <h4>함께 복용 가능 성분</h4>
-            <span>함께 먹어도 되는 약/영양제 추천</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="banner-side-illust">
-      <svg viewBox="0 0 160 180" fill="none">
-        <rect x="20" y="20" width="120" height="150" rx="14" fill="#ffffff" stroke="#bfe6c4" stroke-width="3"/>
-        <rect x="36" y="40" width="88" height="10" rx="4" fill="#cdeacf"/>
-        <rect x="36" y="60" width="60" height="8" rx="4" fill="#e3f3e6"/>
-        <circle cx="115" cy="125" r="24" fill="#dff0e0"/>
-        <path d="M104 125 l8 8 16 -18" stroke="#2f8f4e" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-        <rect x="36" y="90" width="50" height="8" rx="4" fill="#e3f3e6"/>
-        <rect x="36" y="105" width="40" height="8" rx="4" fill="#e3f3e6"/>
-      </svg>
-    </div>
-  </div>
-
   <div class="disclaimer">
     <span class="shield">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-11V5l-8-3-8 3v6c0 7 8 11 8 11z"/><polyline points="9 12 11 14 15 10"/></svg>
@@ -737,11 +795,7 @@
 <div class="wrap" id="detailPage">
   <div class="topbar">
     <div class="back-btn" id="backBtn">←</div>
-    <div class="eyebrow" style="margin-bottom:0;">약 검색 · 정보</div>
   </div>
-
-  <h1 class="detail-title" id="dTitle">-</h1>
-  <p class="detail-sub">약에 대한 상세 정보를 확인하세요.</p>
 
   <div class="mini-search">
     <span style="color:var(--text-light);font-size:14px;">🔍</span>
@@ -761,8 +815,11 @@
         <div class="meta-line"><b>분류</b> : <span id="dClass"></span></div>
         <div class="desc" id="dDesc"></div>
       </div>
-      <div class="basic-info-box">
-        <h4>기본 정보</h4>
+    </div>
+
+    <div class="basic-info-box">
+      <h4>기본 정보</h4>
+      <div class="bi-grid">
         <div class="bi-row"><div class="bi-ico">⏱</div><div class="bi-text"><span class="bi-label">복용 방법</span><span class="bi-value" id="biUsage"></span></div></div>
         <div class="bi-row"><div class="bi-ico">↻</div><div class="bi-text"><span class="bi-label">복용 간격</span><span class="bi-value" id="biInterval"></span></div></div>
         <div class="bi-row"><div class="bi-ico">●</div><div class="bi-text"><span class="bi-label">제형 / 색상</span><span class="bi-value" id="biForm"></span></div></div>
@@ -780,11 +837,11 @@
         <div id="dFunctions"></div>
       </div>
       <div class="col">
-        <h3>함께 복용해도 되는 약 / 비타민 <span class="col-tag">알맞게 또는 주의</span></h3>
+        <h3>함께 복용해도 되는 약 / 비타민</h3>
         <div id="dGood"></div>
       </div>
       <div class="col">
-        <h3>함께 복용하면 안 되는 약 <span class="col-tag warn">주의 또는 금기</span></h3>
+        <h3>함께 복용하면 안 되는 약</h3>
         <div id="dBad"></div>
       </div>
       <div class="col">
@@ -985,10 +1042,11 @@ function pillSvg(color){
 
 function renderListColumn(container, list, type){
   container.innerHTML = '';
+  const iconMap = { dot: '●', check: '✓', bad: '!' };
+  const icon = iconMap[type] || '✓';
   (list || []).forEach(item=>{
     const row = document.createElement('div');
     row.className = `item ${type}`;
-    const icon = (type === 'caution' || type === 'bad') ? '!' : '✓';
     row.innerHTML = `
       <div class="ico">${icon}</div>
       <div class="item-text">
@@ -1009,7 +1067,6 @@ function renderPrecautions(container, list){
 }
 
 function showDetail(drug){
-  document.getElementById('dTitle').textContent = drug.name;
   document.getElementById('dName').textContent = drug.name;
   document.getElementById('dCategoryBadge').textContent = drug.category;
   document.getElementById('dIngredient').textContent = drug.ingredient;
@@ -1025,8 +1082,8 @@ function showDetail(drug){
   document.getElementById('biExpiry').textContent = bi.expiry || '-';
   document.getElementById('biOtc').textContent = bi.otc || '-';
 
-  renderListColumn(document.getElementById('dFunctions'), drug.functions, 'good');
-  renderListColumn(document.getElementById('dGood'), drug.good, 'ok');
+  renderListColumn(document.getElementById('dFunctions'), drug.functions, 'dot');
+  renderListColumn(document.getElementById('dGood'), drug.good, 'check');
   renderListColumn(document.getElementById('dBad'), drug.bad, 'bad');
   renderPrecautions(document.getElementById('dPrecautions'), drug.precautions);
   document.getElementById('dOverdose').textContent = drug.overdose;
