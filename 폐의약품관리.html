@@ -20,12 +20,50 @@
   *{box-sizing:border-box;}
   body{
     margin:0;
-    font-family:"Pretendard","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+    font-family:"Apple SD Gothic Neo","Pretendard","Segoe UI",sans-serif;
     background:var(--paper);
     color:var(--ink);
     line-height:1.55;
   }
   .wrap{max-width:1080px;margin:0 auto;padding:0 24px;}
+
+  /* ---- 상단 내비게이션 ---- */
+  .top-row{
+    display:grid;
+    grid-template-columns:1fr auto 1fr;
+    align-items:center;
+    padding:32px 0 8px;
+  }
+  .logo-mark{
+    font-size:24px;
+    font-weight:800;
+    color:var(--green-900);
+    letter-spacing:-0.02em;
+    justify-self:start;
+  }
+  .top-nav-label{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    color:var(--green-700);
+    font-weight:800;
+    font-size:19px;
+    justify-self:center;
+  }
+  .top-pill-tag{
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:30px;
+    padding:9px 18px;
+    font-size:13.5px;
+    font-weight:700;
+    color:var(--green-900);
+    box-shadow:0 6px 16px -10px rgba(31,77,54,0.3);
+    justify-self:end;
+  }
 
   /* ---- 상단 경고 영역 ---- */
   .warn-band{
@@ -68,13 +106,7 @@
     position:relative;
     overflow:hidden;
   }
-  .eyebrow{
-    display:inline-flex;align-items:center;gap:8px;
-    font-size:0.9rem;font-weight:700;color:var(--green-700);
-    background:var(--green-100);
-    padding:6px 14px;border-radius:999px;
-    margin-bottom:22px;
-  }
+ 
   .hero-grid{
     display:grid;
     grid-template-columns:1.3fr 1fr;
@@ -165,7 +197,7 @@
     position:relative;
     border-radius:14px;
     overflow:hidden;
-    height:280px;
+    height:420px;
     background:
       linear-gradient(0deg, rgba(60,148,97,0.06) 1px, transparent 1px),
       linear-gradient(90deg, rgba(60,148,97,0.06) 1px, transparent 1px),
@@ -220,25 +252,6 @@
   .loc-list li .name{font-weight:600;color:var(--ink);}
   .loc-list li .dist{color:var(--ink-soft);font-size:0.85rem;}
 
-  .btn-primary{
-    display:flex;align-items:center;justify-content:center;gap:8px;
-    width:100%;
-    background:var(--green-700);
-    color:#fff;
-    border:none;
-    border-radius:12px;
-    padding:14px;
-    font-size:1rem;
-    font-weight:700;
-    cursor:pointer;
-    transition:background .15s ease, transform .15s ease;
-  }
-  .btn-primary:hover{background:var(--green-900);transform:translateY(-1px);}
-  .btn-primary:focus-visible{outline:3px solid var(--green-600);outline-offset:2px;}
-  .btn-note{
-    text-align:center;font-size:0.78rem;color:var(--ink-soft);margin-top:8px;
-  }
-
   /* 처리 방법 리스트 */
   .method-list{list-style:none;margin:0;padding:0;display:grid;gap:0;}
   .method-list li{
@@ -256,20 +269,6 @@
   .method-body{flex:1;}
   .method-body .m-title{font-weight:700;color:var(--green-900);font-size:0.98rem;margin-bottom:3px;}
   .method-body .m-desc{color:var(--ink-soft);font-size:0.85rem;}
-  .method-action{
-    display:flex;align-items:center;gap:6px;
-    border:1px solid var(--line);
-    border-radius:999px;
-    padding:7px 14px;
-    font-size:0.8rem;
-    color:var(--green-700);
-    font-weight:600;
-    white-space:nowrap;
-    background:#fff;
-    cursor:pointer;
-  }
-  .method-action:hover{background:var(--green-50);}
-
   .tip-row{
     margin-top:18px;
     display:flex;align-items:flex-start;gap:10px;
@@ -300,6 +299,7 @@
   }
 
   @media (max-width:880px){
+    .top-row{grid-template-columns:auto 1fr auto; gap:10px;}
     .hero-grid{grid-template-columns:1fr;}
     .hero-art{order:-1;}
     .feature-grid{grid-template-columns:1fr;}
@@ -313,8 +313,19 @@
 
 <main class="wrap">
 
+  <div class="top-row">
+    <div class="logo-mark">Pilling</div>
+    <div class="top-nav-label">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 8C8 10 5.9 16.17 3.82 21.34l1.89.66.95-2.3c.48.17.98.3 1.34.3C19 20 22 3 22 3c-1 2-8 2.25-13 3.25S2 11.5 2 13.5c0 1.43.74 2.84 1.5 3.5C2.74 12.41 6.97 9.13 17 8z"/></svg>
+      폐의약품 관리
+    </div>
+    <div class="top-pill-tag">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 8C8 10 5.9 16.17 3.82 21.34l1.89.66.95-2.3c.48.17.98.3 1.34.3C19 20 22 3 22 3c-1 2-8 2.25-13 3.25S2 11.5 2 13.5c0 1.43.74 2.84 1.5 3.5C2.74 12.41 6.97 9.13 17 8z"/></svg>
+      오늘도 파이팅!
+    </div>
+  </div>
+
   <section class="hero">
-    <span class="eyebrow">🌿 폐의약품 처리</span>
     <div class="hero-grid">
       <div>
         <h1>올바른 폐의약품 처리,<br>우리의 건강과 <span>환경</span>을 지키는 첫걸음입니다.</h1>
@@ -331,27 +342,6 @@
           <path d="M75 50 q14 -18 28 0" stroke="#3c9461" stroke-width="4" fill="none" stroke-linecap="round"/>
         </svg>
       </div>
-    </div>
-  </section>
-
-  <section class="feature-grid">
-    <div class="feature-card">
-      <div class="circle">🌱</div>
-      <h3>왜 처리해야 하나요?</h3>
-      <p>남은 약을 하수구나 쓰레기통에 버리면 토양과 수질을 오염시키고, 생태계와 우리의 건강을 위협할 수 있습니다.</p>
-      <p class="strong">올바른 처리가 환경 오염과 약물 오남용을 예방합니다.</p>
-    </div>
-    <div class="feature-card">
-      <div class="circle">🛡️</div>
-      <h3>얼마나 중요한가요?</h3>
-      <p>1g의 약물 성분이 최대 1톤의 물을 오염시킬 수 있습니다.</p>
-      <p class="strong">항생제, 호르몬제 등은 생태계 교란과 내성균 발생의 원인이 되어 미래 세대의 건강을 위험합니다.</p>
-    </div>
-    <div class="feature-card">
-      <div class="circle">👥</div>
-      <h3>우리 모두의 책임</h3>
-      <p>가정에서부터 실천하는 올바른 폐의약품 처리는 더 나은 환경과 건강한 사회를 만드는</p>
-      <p class="strong">가장 쉽고 확실한 방법입니다.</p>
     </div>
   </section>
 
@@ -377,9 +367,6 @@
         <li><span class="name">○○○ 주민센터</span><span class="dist">도보 10분 · 0.8km</span></li>
         <li><span class="name">○○○ 보건지소</span><span class="dist">차량 5분 · 1.2km</span></li>
       </ul>
-
-      <button class="btn-primary" id="locate-btn">⌖ 내 위치 주변 수거함 찾기</button>
-      <p class="btn-note">버튼 클릭 시 위치 권한 허용이 필요합니다. (기능은 추후 지도 연동 예정)</p>
     </div>
 
     <div class="panel">
@@ -395,7 +382,6 @@
             <div class="m-title">알약 / 캡슐</div>
             <div class="m-desc">포장 그대로 수거함에 넣어주세요. 포장지가 없어도 괜찮습니다.</div>
           </div>
-          <button class="method-action">🗑 수거함 배출</button>
         </li>
         <li>
           <div class="method-icon">🧴</div>
@@ -403,7 +389,6 @@
             <div class="m-title">가루약 / 시럽</div>
             <div class="m-desc">투명한 용기에 담아 내용물이 새지 않게 한 후 수거함에 넣어주세요.</div>
           </div>
-          <button class="method-action">🗑 수거함 배출</button>
         </li>
         <li>
           <div class="method-icon">🧪</div>
@@ -411,15 +396,13 @@
             <div class="m-title">연고 / 크림 / 파스</div>
             <div class="m-desc">용기째 수거함에 넣어주세요. 내용물을 비울 필요는 없습니다.</div>
           </div>
-          <button class="method-action">🗑 수거함 배출</button>
         </li>
         <li>
           <div class="method-icon">💉</div>
           <div class="method-body">
             <div class="m-title">주사기 / 앰플</div>
-            <div class="m-desc">개봉하지 않은 상태로 수거함에 넣어주세요. (바늘은 제거하지 않아도 됩니다.)</div>
+            <div class="m-desc">개봉하지 않은 상태로 수거함에 넣어주세요. 바늘은 제거하지 않아도 됩니다.</div>
           </div>
-          <button class="method-action">🗑 수거함 배출</button>
         </li>
         <li>
           <div class="method-icon">💨</div>
@@ -427,7 +410,6 @@
             <div class="m-title">흡입제 / 스프레이</div>
             <div class="m-desc">캡을 닫고 수거함에 넣어주세요. 가스는 완전히 사용하지 않아도 됩니다.</div>
           </div>
-          <button class="method-action">🗑 수거함 배출</button>
         </li>
       </ul>
 
@@ -438,28 +420,32 @@
     </div>
   </section>
 
+  <section class="feature-grid">
+    <div class="feature-card">
+      <div class="circle">🌱</div>
+      <h3>왜 처리해야 하나요?</h3>
+      <p>남은 약을 하수구나 쓰레기통에 버리면 토양과 수질을 오염시키고, 생태계와 우리의 건강을 위협할 수 있습니다.</p>
+      <p class="strong">올바른 처리가 환경 오염과 약물 오남용을 예방합니다.</p>
+    </div>
+    <div class="feature-card">
+      <div class="circle">🛡️</div>
+      <h3>얼마나 중요한가요?</h3>
+      <p>1g의 약물 성분이 최대 1톤의 물을 오염시킬 수 있습니다.</p>
+      <p class="strong">항생제, 호르몬제 등은 생태계 교란과 내성균 발생의 원인이 되어 미래 세대의 건강을 위험합니다.</p>
+    </div>
+    <div class="feature-card">
+      <div class="circle">👥</div>
+      <h3>우리 모두의 책임</h3>
+      <p>가정에서부터 실천하는 올바른 폐의약품 처리는 더 나은 환경과 건강한 사회를 만드는</p>
+      <p class="strong">가장 쉽고 확실한 방법입니다.</p>
+    </div>
+  </section>
+
 </main>
 
 <footer>
   © 올바른 폐의약품 처리 캠페인 · 우리의 건강과 환경을 지키는 작은 실천
 </footer>
-
-<script>
-  document.getElementById('locate-btn').addEventListener('click', function(){
-    if(navigator.geolocation){
-      navigator.geolocation.getCurrentPosition(
-        function(pos){
-          alert('위치 확인됨: ' + pos.coords.latitude.toFixed(4) + ', ' + pos.coords.longitude.toFixed(4) + '\n(지도 연동 기능은 추후 구현 예정입니다)');
-        },
-        function(){
-          alert('위치 정보를 가져올 수 없습니다. (지도 연동 기능은 추후 구현 예정입니다)');
-        }
-      );
-    } else {
-      alert('이 브라우저는 위치 정보를 지원하지 않습니다.');
-    }
-  });
-</script>
 
 </body>
 </html>
