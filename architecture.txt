@@ -1,0 +1,12 @@
+[Firestore Collection Structure]
+
+📁 users (컬렉션)
+   └── 📄 {userId} (문서)
+        ├── userId: String
+        └── userEmail: String
+
+📁 items (컬렉션)
+   └── 📄 {itemId} (문서)
+        ├── itemId: String
+        ├── itemName: String  <-- (필드명 통일 규칙)
+        └── itemPrice: Number

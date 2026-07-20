@@ -1,0 +1,2 @@
+- 백업 방법: Google Cloud CLI 설치 후 `gcloud firestore export gs://[버킷명]` 명령어 실행
+- 복구 방법: `gcloud firestore import gs://[버킷명]/[백업폴더]` 명령어 실행
