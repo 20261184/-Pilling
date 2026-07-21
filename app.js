@@ -1,6 +1,45 @@
 import { db } from "./firebase.js";
 import { collection, addDoc, getDocs, updateDoc, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
+// =====================
+// 약 검색 API (현지 제공)
+// =====================
+
+const SERVICE_KEY = "4cb1cd1806ff259ee700c4edd292e720aa7640cfbff9616f5998fd8408211b91";
+
+const getCleanMedicationData = (text) => {
+  if (!text || typeof text !== 'string') return '';
+  return text
+    .replace(/<[^>]*>/g, '')
+    .replace(/&nbsp;/gi, ' ')
+    .replace(/&lt;/gi, '<')
+    .replace(/&gt;/gi, '>')
+    .replace(/&amp;/gi, '&')
+    .replace(/&quot;/gi, '"')
+    .replace(/\s+/g, ' ')
+    .trim();
+};
+
+const searchMedicine = async (itemName) => {
+  if (!itemName) throw new Error('검색할 약 이름을 입력해주세요.');
+  
+  const apiUrl = `https://apis.data.go.kr/1471057/MdcinGrntitService01/getMdcinGrntitList01?serviceKey=${SERVICE_KEY}&itemName=${encodeURIComponent(itemName)}&type=json`;
+  
+  const response = await fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent(apiUrl)}`);
+  if (!response.ok) throw new Error(`API 호출 실패: ${response.status}`);
+  
+  const result = await response.json();
+  const items = result.body?.items || [];
+  
+  return items.map((item) => ({
+    itemName: item.ITEM_NAME,
+    itemSeq: item.ITEM_SEQ,
+    effect: getCleanMedicationData(item.EE_DOC_DATA),
+    usage: getCleanMedicationData(item.UD_DOC_DATA),
+    caution: getCleanMedicationData(item.NB_DOC_DATA),
+  }));
+};
+
 // Create - 약 추가
 async function addMedicineToFirebase(medicine) {
   const docRef = await addDoc(collection(db, "medicines"), medicine);
@@ -253,7 +292,7 @@ window.testFirebaseSave = testFirebaseSave;
 // AI 성분 분석
 // =====================
 
-const GEMINI_API_KEY = "여기에_키_입력";
+const GEMINI_API_KEY = "AQ.Ab8RN6IEKylIMeT5QoNLyl3x5z40Ir4YK-Q7rEsDJsLB9vEF4A";
 
 /**
  * 약 이름을 받아 Gemini AI로 성분 분석 결과 반환
@@ -344,3 +383,44 @@ function loadMap() {
 }
 
 window.loadMap = loadMap;
+
+async function handleSearch() {
+  const query = document.getElementById("searchInput").value;
+  const resultDiv = document.getElementById("searchResult");
+  
+  if (!query) {
+    alert("약 이름을 입력해주세요!");
+    return;
+  }
+
+  resultDiv.textContent = "검색 중...";
+
+  try {
+    const prompt = `약 이름: ${query}
+다음 항목을 간단하게 알려주세요:
+1. 주요 성분
+2. 효능
+3. 용법 및 용량
+4. 과복용 시 위험
+5. 주의사항`;
+
+    const response = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: prompt }] }]
+        })
+      }
+    );
+
+    const data = await response.json();
+    resultDiv.textContent = data.candidates[0].content.parts[0].text;
+  } catch (error) {
+    resultDiv.textContent = "검색 중 오류가 발생했습니다.";
+    console.error(error);
+  }
+}
+
+window.handleSearch = handleSearch;
