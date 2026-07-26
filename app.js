@@ -139,7 +139,7 @@ function isTimePassed(time) {
  * 입력 폼의 값을 읽어 새로운 약 객체를 medicines 배열에 추가
  * 빈 값이 있으면 경고창을 띄우고 중단
  */
-function addMedicine() {
+async function addMedicine() {
   const name = document.getElementById("name").value;
   const dose = document.getElementById("dose").value;
   const time = document.getElementById("time").value;
@@ -149,12 +149,17 @@ function addMedicine() {
     return;
   }
 
-  // alarmOn: 알림 기본 ON, checked: 미복용 상태로 시작
-  medicines.push({ name, dose, time, alarmOn: true, checked: false });
+  const newMedicine = { name, dose, time, alarmOn: true, checked: false };
+  
+  // Firebase에 저장
+  const id = await addMedicineToFirebase(newMedicine);
+  newMedicine.id = id;
+
+  // localStorage에도 저장
+  medicines.push(newMedicine);
   save();
   displayList();
 
-  // 입력창 초기화
   document.getElementById("name").value = "";
   document.getElementById("dose").value = "";
   document.getElementById("time").value = "";
@@ -384,12 +389,23 @@ function loadMap() {
 
 window.loadMap = loadMap;
 
+// =====================
+// 검색 캐시 (속도 개선)
+// =====================
+const searchCache = {};
+
 async function handleSearch() {
-  const query = document.getElementById("searchInput").value;
+  const query = document.getElementById("searchInput").value.trim();
   const resultDiv = document.getElementById("searchResult");
   
   if (!query) {
     alert("약 이름을 입력해주세요!");
+    return;
+  }
+
+  // 캐시에 있으면 바로 반환
+  if (searchCache[query]) {
+    resultDiv.textContent = searchCache[query];
     return;
   }
 
@@ -416,7 +432,11 @@ async function handleSearch() {
     );
 
     const data = await response.json();
-    resultDiv.textContent = data.candidates[0].content.parts[0].text;
+    const result = data.candidates[0].content.parts[0].text;
+
+    // 캐시에 저장
+    searchCache[query] = result;
+    resultDiv.textContent = result;
   } catch (error) {
     resultDiv.textContent = "검색 중 오류가 발생했습니다.";
     console.error(error);
