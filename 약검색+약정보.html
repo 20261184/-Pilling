@@ -41,16 +41,16 @@
   .logo-mark{
     font-size:26px;
     font-weight:800;
-    color:var(--green-dark);
+    color:#1a3f26;
     letter-spacing:-0.02em;
   }
   .nav-center{
     display:flex;
     align-items:center;
     gap:8px;
-    font-size:16px;
-    font-weight:700;
-    color:var(--green-mid);
+    font-size:19px;
+    font-weight:800;
+    color:#1a3f26;
   }
   .fighting-badge{
     display:flex;
@@ -62,7 +62,7 @@
     padding:10px 20px;
     font-size:14.5px;
     font-weight:700;
-    color:var(--green-dark);
+    color:#1a3f26;
     box-shadow:0 8px 20px -14px rgba(31,107,58,0.35);
     white-space:nowrap;
   }
@@ -158,6 +158,71 @@
     font-size:13.5px;
     color:var(--warn-text);
     display:none;
+  }
+  .not-found-msg .suggest-row{
+    margin-top:10px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+  .not-found-msg .suggest-label{
+    font-size:13px;
+    color:var(--text-mid);
+    margin-right:2px;
+  }
+  .chip-btn{
+    border:1px solid #f3b8b3;
+    background:#fff;
+    color:var(--green-dark);
+    border-radius:999px;
+    padding:6px 14px;
+    font-size:13px;
+    font-weight:600;
+    cursor:pointer;
+    transition:background .15s ease, border-color .15s ease;
+  }
+  .chip-btn:hover{background:var(--green-pale); border-color:var(--green-mid);}
+
+  /* =================== 자동완성 드롭다운 =================== */
+  .search-card, .mini-search{position:relative;}
+  .ac-dropdown{
+    position:absolute;
+    left:0; right:0;
+    top:calc(100% + 8px);
+    background:#fff;
+    border:1px solid #eef2ee;
+    border-radius:16px;
+    box-shadow:0 20px 40px -20px rgba(31,107,58,0.3);
+    overflow:hidden;
+    z-index:20;
+    display:none;
+  }
+  .ac-dropdown.open{display:block;}
+  .ac-item{
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+    padding:12px 18px;
+    cursor:pointer;
+    font-size:15px;
+    color:var(--text-dark);
+  }
+  .ac-item .ac-tag{
+    font-size:12px;
+    color:var(--text-light);
+    font-weight:500;
+  }
+  .ac-item + .ac-item{border-top:1px solid var(--line);}
+  .ac-item:hover, .ac-item.active{background:var(--green-pale);}
+  .ac-item mark{
+    background:none;
+    color:var(--green-dark);
+    font-weight:800;
+  }
+  .ac-empty{
+    padding:14px 18px;
+    font-size:13.5px;
+    color:var(--text-light);
   }
 
   /* trending section */
@@ -656,8 +721,9 @@
     <span class="icon">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
     </span>
-    <input type="text" id="searchInput" placeholder="어떤 약을 검색하시겠어요? (예: 타이레놀)" />
+    <input type="text" id="searchInput" placeholder="어떤 약을 검색하시겠어요? (예: 타이레놀)" autocomplete="off" />
     <button class="search-btn" id="searchBtn">검색</button>
+    <div class="ac-dropdown" id="searchAc"></div>
   </div>
   <div class="not-found-msg" id="notFoundMsg"></div>
 
@@ -736,8 +802,9 @@
 <div class="wrap" id="detailPage">
   <div class="mini-search">
     <span style="color:var(--text-light);font-size:14px;">🔍</span>
-    <input type="text" id="detailSearchInput" placeholder="다른 약 이름 검색하기">
+    <input type="text" id="detailSearchInput" placeholder="다른 약 이름 검색하기" autocomplete="off">
     <button id="detailSearchBtn">검색</button>
+    <div class="ac-dropdown" id="detailAc"></div>
   </div>
 
   <div class="detail-card">
@@ -944,12 +1011,61 @@ const notFoundMsg = document.getElementById('notFoundMsg');
 const detailSearchInput = document.getElementById('detailSearchInput');
 const detailSearchBtn = document.getElementById('detailSearchBtn');
 
+/* 공백/대소문자 무시 정규화 */
+function normalize(s){
+  return (s || '').trim().replace(/\s+/g, '').toLowerCase();
+}
+
+/* 오타 허용을 위한 레벤슈타인 거리 */
+function levenshtein(a, b){
+  const m = a.length, n = b.length;
+  if(m === 0) return n;
+  if(n === 0) return m;
+  const dp = Array.from({length: m+1}, () => new Array(n+1).fill(0));
+  for(let i=0;i<=m;i++) dp[i][0] = i;
+  for(let j=0;j<=n;j++) dp[0][j] = j;
+  for(let i=1;i<=m;i++){
+    for(let j=1;j<=n;j++){
+      const cost = a[i-1] === b[j-1] ? 0 : 1;
+      dp[i][j] = Math.min(
+        dp[i-1][j] + 1,
+        dp[i][j-1] + 1,
+        dp[i-1][j-1] + cost
+      );
+    }
+  }
+  return dp[m][n];
+}
+
+/* 입력어와 가장 관련있는 약들을 점수순으로 반환 (0=완전일치, 낮을수록 관련도 높음) */
+function scoreDrugs(query){
+  const q = normalize(query);
+  if(!q) return [];
+  return DRUGS.map(d=>{
+    const name = normalize(d.name);
+    let score = null;
+    if(name === q) score = 0;
+    else if(name.startsWith(q)) score = 1;
+    else if(name.includes(q) || q.includes(name)) score = 2;
+    else {
+      const dist = levenshtein(name, q);
+      const tolerance = q.length <= 2 ? 1 : 2;
+      if(dist <= tolerance) score = 3 + dist;
+    }
+    return score === null ? null : { drug: d, score };
+  }).filter(Boolean).sort((a,b)=> a.score - b.score);
+}
+
+function getSuggestions(query, limit=6){
+  return scoreDrugs(query).slice(0, limit).map(x => x.drug);
+}
+
+/* 검색 실행 시 사용: 정확/부분/오타허용 매칭 중 가장 근접한 약 하나 반환 */
 function findDrug(query){
   const q = (query || '').trim();
   if(!q) return null;
-  return DRUGS.find(d => d.name === q) ||
-         DRUGS.find(d => d.name.includes(q)) ||
-         DRUGS.find(d => q.includes(d.name));
+  const scored = scoreDrugs(q);
+  return scored.length ? scored[0].drug : null;
 }
 
 function pillSvg(color){
@@ -1037,13 +1153,23 @@ function showDetail(drug){
 }
 
 function goToDetail(query){
+  closeAllDropdowns();
   const drug = findDrug(query);
   if(drug){
     notFoundMsg.style.display = 'none';
     showDetail(drug);
   } else {
-    notFoundMsg.textContent = `"${query}"에 대한 검색 결과가 없습니다. 다른 이름으로 검색해보세요.`;
+    const trending = DRUGS.map(d => d.name);
+    notFoundMsg.innerHTML = `
+      "${query}"에 대한 검색 결과가 없습니다.
+      <div class="suggest-row">
+        <span class="suggest-label">이런 약을 찾으시나요?</span>
+        ${trending.map(name => `<button type="button" class="chip-btn" data-suggest="${name}">${name}</button>`).join('')}
+      </div>`;
     notFoundMsg.style.display = 'block';
+    notFoundMsg.querySelectorAll('[data-suggest]').forEach(btn=>{
+      btn.addEventListener('click', ()=> goToDetail(btn.getAttribute('data-suggest')));
+    });
   }
 }
 
@@ -1053,20 +1179,118 @@ function goToSearch(){
   searchInput.value = '';
 }
 
-searchBtn.addEventListener('click', ()=> goToDetail(searchInput.value));
-searchInput.addEventListener('keydown', e=>{ if(e.key === 'Enter') goToDetail(searchInput.value); });
+/* =========================================================
+   자동완성 드롭다운
+========================================================= */
+function highlightMatch(name, query){
+  const idx = normalize(name).indexOf(normalize(query));
+  if(idx === -1) return name; // 오타 허용 매칭이라 원문에 안 나올 수 있음
+  // normalize는 공백 제거를 하므로, 원문 기준 대략적인 위치로 강조 (원문에 공백 없다는 전제하에 정확)
+  const before = name.slice(0, idx);
+  const match = name.slice(idx, idx + query.trim().length);
+  const after = name.slice(idx + query.trim().length);
+  return `${before}<mark>${match}</mark>${after}`;
+}
+
+const activeDropdowns = [];
+
+function closeAllDropdowns(){
+  activeDropdowns.forEach(d => d.close());
+}
+
+function setupAutocomplete(inputEl, dropdownEl, submitBtn){
+  let items = [];
+  let activeIndex = -1;
+
+  function render(query){
+    items = getSuggestions(query, 6);
+    activeIndex = -1;
+    if(!items.length){
+      dropdownEl.innerHTML = `<div class="ac-empty">일치하는 약이 없어요. 검색을 눌러 추천 검색어를 확인해보세요.</div>`;
+    } else {
+      dropdownEl.innerHTML = items.map((d, i) => `
+        <div class="ac-item" data-index="${i}">
+          <span>${highlightMatch(d.name, query)}</span>
+          <span class="ac-tag">${d.category || ''}</span>
+        </div>`).join('');
+      dropdownEl.querySelectorAll('.ac-item').forEach(el=>{
+        el.addEventListener('mousedown', e=>{
+          e.preventDefault();
+          const i = Number(el.getAttribute('data-index'));
+          select(i);
+        });
+      });
+    }
+    open();
+  }
+
+  function open(){ dropdownEl.classList.add('open'); }
+  function close(){ dropdownEl.classList.remove('open'); activeIndex = -1; }
+
+  function setActive(i){
+    activeIndex = i;
+    dropdownEl.querySelectorAll('.ac-item').forEach((el, idx)=>{
+      el.classList.toggle('active', idx === activeIndex);
+    });
+    if(activeIndex >= 0 && dropdownEl.children[activeIndex]){
+      dropdownEl.children[activeIndex].scrollIntoView({block:'nearest'});
+    }
+  }
+
+  function select(i){
+    const drug = items[i];
+    if(!drug) return;
+    inputEl.value = '';
+    close();
+    goToDetail(drug.name);
+  }
+
+  inputEl.addEventListener('input', ()=>{
+    const q = inputEl.value.trim();
+    notFoundMsg.style.display = 'none';
+    if(q.length === 0){ close(); return; }
+    render(q);
+  });
+
+  inputEl.addEventListener('keydown', e=>{
+    if(!dropdownEl.classList.contains('open') || items.length === 0){
+      if(e.key === 'Enter'){
+        goToDetail(inputEl.value);
+        if(submitBtn === detailSearchBtn) inputEl.value = '';
+      }
+      return;
+    }
+    if(e.key === 'ArrowDown'){
+      e.preventDefault();
+      setActive(Math.min(activeIndex + 1, items.length - 1));
+    } else if(e.key === 'ArrowUp'){
+      e.preventDefault();
+      setActive(Math.max(activeIndex - 1, 0));
+    } else if(e.key === 'Enter'){
+      e.preventDefault();
+      if(activeIndex >= 0){ select(activeIndex); }
+      else { goToDetail(inputEl.value); close(); }
+    } else if(e.key === 'Escape'){
+      close();
+    }
+  });
+
+  inputEl.addEventListener('blur', ()=> setTimeout(close, 100));
+  inputEl.addEventListener('focus', ()=>{ if(inputEl.value.trim()) render(inputEl.value.trim()); });
+
+  activeDropdowns.push({ close });
+}
+
+setupAutocomplete(searchInput, document.getElementById('searchAc'), searchBtn);
+setupAutocomplete(detailSearchInput, document.getElementById('detailAc'), detailSearchBtn);
+
+searchBtn.addEventListener('click', ()=>{ closeAllDropdowns(); goToDetail(searchInput.value); });
 
 detailSearchBtn.addEventListener('click', ()=>{
+  closeAllDropdowns();
   goToDetail(detailSearchInput.value);
   detailSearchInput.value = '';
 });
-detailSearchInput.addEventListener('keydown', e=>{
-  if(e.key === 'Enter'){
-    goToDetail(detailSearchInput.value);
-    detailSearchInput.value = '';
-  }
-});
-
 
 document.querySelectorAll('.supp-card[data-drug]').forEach(card=>{
   card.addEventListener('click', ()=> goToDetail(card.getAttribute('data-drug')));
