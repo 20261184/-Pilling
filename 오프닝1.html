@@ -162,9 +162,15 @@
     .capsule-divider{ width:80px; height:26px; margin-bottom:22px; }
   }
 </style>
+<script>
+  // 애니메이션 끝나면 메인페이지로 이동 (3초 후)
+  setTimeout(function() {
+    location.href = '메인페이지.html';
+  }, 3000);
+</script>
 </head>
 <body>
-
+  
   <div class="bg-layer">
     <div class="dot-grid"></div>
   </div>
