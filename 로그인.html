@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pilling</title>
+<style>
+  :root{
+    --green-dark:#1f4d2e;
+    --green-deep:#1a3f26;
+    --green-mid:#2f8f4e;
+    --green-pale:#eaf3ea;
+    --green-line:#d8e6d8;
+    --text-dark:#1c2b22;
+    --text-mid:#5b6b60;
+    --text-light:#8a988e;
+    --cream:#f7f8f4;
+    --danger:#c4502e;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:"Apple SD Gothic Neo","Pretendard","Segoe UI",sans-serif;
+    background:#fff;
+    color:var(--text-dark);
+  }
+
+  .page{
+    min-height:100vh;
+    display:flex;
+  }
+
+  /* LEFT: 브랜드 패널 */
+  .brand-panel{
+    flex:1;
+    background:linear-gradient(160deg,var(--green-deep),var(--green-dark) 55%,#245537);
+    padding:56px;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    position:relative;
+    overflow:hidden;
+    min-width:0;
+  }
+  .brand-panel::before{
+    content:"";
+    position:absolute;
+    width:520px;height:520px;
+    border-radius:50%;
+    border:1px solid rgba(255,255,255,0.08);
+    top:-160px;right:-160px;
+  }
+  .brand-panel::after{
+    content:"";
+    position:absolute;
+    width:340px;height:340px;
+    border-radius:50%;
+    border:1px solid rgba(255,255,255,0.08);
+    bottom:-120px;left:-120px;
+  }
+  .brand-logo{
+    font-size:24px;
+    font-weight:800;
+    color:#fff;
+    letter-spacing:-0.02em;
+    position:relative;
+    z-index:1;
+  }
+  .brand-mid{
+    position:relative;
+    z-index:1;
+    max-width:420px;
+  }
+  .brand-mid h1{
+    color:#fff;
+    font-size:36px;
+    line-height:1.35;
+    font-weight:800;
+    letter-spacing:-0.02em;
+    margin:0 0 18px;
+  }
+  .brand-mid p{
+    color:rgba(255,255,255,0.72);
+    font-size:15px;
+    line-height:1.7;
+    margin:0;
+  }
+
+  /* RIGHT: 로그인 폼 */
+  .form-panel{
+    flex:1;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:48px 24px;
+  }
+  .form-card{
+    width:100%;
+    max-width:400px;
+  }
+  .form-head{
+    margin-bottom:36px;
+  }
+  .form-head .badge{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    border:1.5px solid var(--green-line);
+    background:#fff;
+    border-radius:30px;
+    padding:7px 15px;
+    font-size:12.5px;
+    font-weight:700;
+    color:var(--green-dark);
+    margin-bottom:20px;
+  }
+  .form-head h2{
+    font-size:28px;
+    font-weight:800;
+    color:var(--green-deep);
+    margin:0 0 10px;
+    letter-spacing:-0.02em;
+  }
+  .form-head p{
+    font-size:14.5px;
+    color:var(--text-mid);
+    margin:0;
+    line-height:1.6;
+  }
+
+  .field{
+    margin-bottom:18px;
+  }
+  .field label{
+    display:block;
+    font-size:13.5px;
+    font-weight:700;
+    color:var(--text-dark);
+    margin-bottom:8px;
+  }
+  .input-wrap{
+    position:relative;
+  }
+  .input-wrap svg{
+    position:absolute;
+    left:16px;
+    top:50%;
+    transform:translateY(-50%);
+    color:var(--text-light);
+    pointer-events:none;
+  }
+  .field input{
+    width:100%;
+    padding:14px 16px 14px 44px;
+    border:1.5px solid var(--green-line);
+    border-radius:12px;
+    font-size:14.5px;
+    font-family:inherit;
+    color:var(--text-dark);
+    background:var(--cream);
+    outline:none;
+    transition:border-color .15s, background .15s;
+  }
+  .password-wrap{
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .input-inner{
+    position:relative;
+    flex:1;
+    min-width:0;
+  }
+  .input-inner svg{
+    position:absolute;
+    left:16px;
+    top:50%;
+    transform:translateY(-50%);
+    color:var(--text-light);
+    pointer-events:none;
+  }
+  .input-inner input{
+    width:100%;
+    padding:14px 16px 14px 44px;
+    border:1.5px solid var(--green-line);
+    border-radius:12px;
+    font-size:14.5px;
+    font-family:inherit;
+    color:var(--text-dark);
+    background:var(--cream);
+    outline:none;
+    transition:border-color .15s, background .15s;
+  }
+  .input-inner input::placeholder{color:var(--text-light);}
+  .input-inner input:focus{
+    border-color:var(--green-mid);
+    background:#fff;
+  }
+  .toggle-pw{
+    flex-shrink:0;
+    background:none;
+    border:none;
+    color:var(--text-light);
+    cursor:pointer;
+    padding:6px;
+    display:flex;
+  }
+
+  .row-between{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin:4px 0 26px;
+  }
+  .remember{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-size:13.5px;
+    color:var(--text-mid);
+    cursor:pointer;
+    user-select:none;
+  }
+  .remember input{
+    width:16px;height:16px;
+    accent-color:var(--green-dark);
+    cursor:pointer;
+  }
+  .link-muted{
+    font-size:13.5px;
+    color:var(--green-mid);
+    font-weight:700;
+    text-decoration:none;
+    cursor:pointer;
+  }
+  .link-muted:hover{text-decoration:underline;}
+
+  .btn-primary{
+    width:100%;
+    padding:15px;
+    background:var(--green-deep);
+    color:#fff;
+    border:none;
+    border-radius:12px;
+    font-size:15px;
+    font-weight:700;
+    font-family:inherit;
+    cursor:pointer;
+    transition:background .15s, transform .1s;
+  }
+  .btn-primary:hover{background:var(--green-dark);}
+  .btn-primary:active{transform:scale(0.99);}
+
+  .divider{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    margin:26px 0;
+    color:var(--text-light);
+    font-size:12.5px;
+    font-weight:600;
+  }
+  .divider::before,.divider::after{
+    content:"";
+    flex:1;
+    height:1px;
+    background:var(--green-line);
+  }
+
+  .social-row{
+    display:flex;
+    gap:12px;
+    margin-bottom:30px;
+  }
+  .btn-social{
+    flex:1;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    padding:12px;
+    border:1.5px solid var(--green-line);
+    border-radius:12px;
+    background:#fff;
+    font-size:13.5px;
+    font-weight:700;
+    color:var(--text-dark);
+    cursor:pointer;
+    transition:border-color .15s, background .15s;
+  }
+  .btn-social:hover{border-color:var(--green-mid); background:var(--green-pale);}
+
+  .signup-note{
+    text-align:center;
+    font-size:13.5px;
+    color:var(--text-mid);
+  }
+  .signup-note a{
+    color:var(--green-dark);
+    font-weight:700;
+    text-decoration:none;
+  }
+  .signup-note a:hover{text-decoration:underline;}
+
+  @media (max-width:880px){
+    .brand-panel{display:none;}
+    .form-panel{padding:32px 20px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- 왼쪽 브랜드 패널 -->
+  <div class="brand-panel">
+    <div class="brand-logo">Pilling</div>
+
+    <div class="brand-mid">
+      <h1>로그인하고<br>나의 복용 현황을<br>바로 확인하세요</h1>
+      <p>매일 복용 기록, 성분 조합 분석, 폐의약품 배출 이력까지<br>로그인 한 번으로 내 건강 데이터를 한눈에 관리할 수 있어요.</p>
+    </div>
+  </div>
+
+  <!-- 오른쪽 로그인 폼 -->
+  <div class="form-panel">
+    <div class="form-card">
+
+      <div class="form-head">
+        <div class="badge">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 8C8 10 5.9 16.17 3.82 21.34l1.89.66.95-2.3c.48.17.98.3 1.34.3C19 20 22 3 22 3c-1 2-8 2.25-13 3.25S2 11.5 2 13.5c0 1.43.74 2.84 1.5 3.5C2.74 12.41 6.97 9.13 17 8z"/></svg>
+          내 손으로 관리하는 나만의 약국
+        </div>
+        <h2>만나서 반가워요</h2>
+        <p>계정 정보를 입력하고 로그인해주세요</p>
+      </div>
+
+      <form>
+        <div class="field">
+          <label for="email">이메일</label>
+          <div class="input-wrap">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4z" stroke="none"/><path d="M22 6l-10 7L2 6"/><rect x="2" y="4" width="20" height="16" rx="2"/></svg>
+            <input type="email" id="email" placeholder="example@email.com" required>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="password">비밀번호</label>
+          <div class="input-wrap">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+            <input type="password" id="password" class="has-toggle" placeholder="비밀번호를 입력하세요" required>
+          </div>
+        </div>
+
+        <div class="row-between">
+          <label class="remember">
+            <input type="checkbox">
+            로그인 상태 유지
+          </label>
+          <a href="#" class="link-muted">비밀번호를 잊으셨나요?</a>
+        </div>
+
+        <button type="submit" class="btn-primary">로그인</button>
+      </form>
+
+      <div class="divider">또는</div>
+
+      <div class="social-row">
+        <button type="button" class="btn-social">
+          <svg width="16" height="16" viewBox="0 0 24 24"><path fill="#4285F4" d="M23.5 12.27c0-.79-.07-1.54-.2-2.27H12v4.51h6.47a5.54 5.54 0 0 1-2.4 3.63v3h3.87c2.27-2.09 3.56-5.17 3.56-8.87z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.94-2.92l-3.87-3c-1.08.72-2.44 1.15-4.07 1.15-3.13 0-5.78-2.11-6.73-4.96H1.28v3.11A12 12 0 0 0 12 24z"/><path fill="#FBBC05" d="M5.27 14.27a7.2 7.2 0 0 1 0-4.54V6.62H1.28a12 12 0 0 0 0 10.76z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0A12 12 0 0 0 1.28 6.62l3.99 3.11C6.22 6.86 8.87 4.75 12 4.75z"/></svg>
+          Google
+        </button>
+        <button type="button" class="btn-social">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="#391B1B"><path d="M12 2C6.48 2 2 5.72 2 10.3c0 2.95 1.9 5.55 4.77 7.02-.21.75-.76 2.7-.87 3.12-.14.52.19.51.4.37.16-.11 2.6-1.76 3.66-2.48.66.1 1.34.15 2.04.15 5.52 0 10-3.72 10-8.18S17.52 2 12 2z"/></svg>
+          카카오
+        </button>
+      </div>
+
+      <p class="signup-note">아직 계정이 없으신가요? <a href="#">회원가입</a></p>
+
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
