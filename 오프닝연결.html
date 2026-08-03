@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pilling</title>
+<style>
+  :root{
+    --bg: #eaf0ed;
+    --surface: #ffffff;
+    --green-100: #dcefd9;
+    --green-300: #b9e3a9;
+    --green-500: #7bc350;
+    --green-600: #5aa838;
+    --green-700: #386b23;
+    --green-900: #1c3322;
+    --coral: #e07a45;
+    --sky: #a9d7e8;
+    --ink: #24352b;
+    --ink-soft: #5b6a60;
+    --font: "Apple SD Gothic Neo","Pretendard","Segoe UI",sans-serif;
+  }
+
+  *{ box-sizing: border-box; }
+
+  html, body{
+    margin:0;
+    padding:0;
+    height:100%;
+    background: var(--bg);
+    font-family: var(--font);
+    overflow-x: hidden;
+  }
+
+  body{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    position:relative;
+    color: var(--ink);
+  }
+
+  /* ---------- flat background (no gradients, matches page bg exactly) ---------- */
+  .bg-layer{
+    position:fixed;
+    inset:0;
+    z-index:0;
+    pointer-events:none;
+    overflow:hidden;
+    background: var(--bg);
+  }
+
+  .dot-grid{
+    position:absolute;
+    inset:0;
+    background-image: radial-gradient(var(--green-500) 1.4px, transparent 1.4px);
+    background-size: 36px 36px;
+    opacity:.05;
+  }
+
+  /* ---------- hero ---------- */
+  .hero{
+    position:relative;
+    z-index:1;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding: 32px;
+    max-width: 920px;
+    width:100%;
+  }
+
+  .logo-wrap{
+    position:relative;
+    width:min(560px, 78vw);
+    margin-bottom: 28px;
+    animation: fadeUp 1s ease both .08s;
+  }
+  .logo-wrap img{
+    position:relative;
+    z-index:1;
+    width:100%;
+    height:auto;
+    display:block;
+  }
+
+  h1.tagline{
+    margin:0;
+    font-family: var(--font);
+    font-weight: 800; /* 기존의 굵기 유지 */
+    letter-spacing: -0.02em; /* 기존의 자간 유지 */
+    font-size: clamp(30px, 5.2vw, 52px); /* 기존 크기 유지 */
+    line-height: 1.2; /* 기존 행간 유지 */
+    color: #1d3b2a; /* 통일된 고급스러운 딥 포레스트 그린 */
+    text-shadow: 0 2px 10px rgba(29, 59, 42, 0.08);
+    animation: fadeUp 1s ease both .22s;
+  }
+
+  p.subline{
+    margin: 0;
+    font-size: clamp(15px, 1.7vw, 18px);
+    font-weight:500;
+    color: var(--ink-soft);
+    max-width: 460px;
+    line-height:1.65;
+    animation: fadeUp 1s ease both .3s;
+  }
+
+  @keyframes fadeUp{
+    from{ opacity:0; transform: translateY(16px); }
+    to{ opacity:1; transform: translateY(0); }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .logo-wrap, h1.tagline, p.subline{ animation: none; opacity:1; transform:none; }
+  }
+
+  @media (max-width: 480px){
+    .hero{ padding: 20px; }
+  }
+</style>
+<script>
+  // 애니메이션 끝나면 메인페이지로 이동 (3초 후)
+  setTimeout(function() {
+    location.href = '메인페이지.html';
+  }, 3000);
+</script>
+</head>
+<body>
+  
+  <div class="bg-layer">
+    <div class="dot-grid"></div>
+  </div>
+
+  <main class="hero">
+    <div class="logo-wrap">
+     <img src="로고2.png">
+    </div>
+
+    <h1 class="tagline">나만의 디지털 약국</h1>
+  </main>
+
+</body>
+</html>

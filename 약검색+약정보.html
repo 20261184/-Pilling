@@ -5,89 +5,81 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Pilling</title>
 <style>
+  /* [폐의약품관리] 페이지 기준 스타일 변수 통일 */
   :root{
-    --bg-top:#eef7ec;
-    --bg-card:#ffffff;
-    --green-dark:#1f6b3a;
-    --green-mid:#2f8f4e;
-    --green-pale:#e3f3e6;
-    --text-dark:#1c2b22;
-    --text-mid:#5b6b60;
-    --text-light:#8a988e;
-    --chip-bg:#eef6ee;
-    --chip-text:#2f8f4e;
+    --green-900:#1f4d36;
+    --green-700:#2f7a4f;
+    --green-600:#3c9461;
+    --green-100:#e7f3ea;
+    --green-50:#f4faf6;
+    --paper:#fbfaf6;
+    --ink:#1b2620;
+    --ink-soft:#5b6a60;
+    --line:#dde7df;
+    --danger:#c4502e;
     --warn-bg:#fdeceb;
     --warn-line:#f3b8b3;
     --warn-text:#c0392b;
-    --line:#eef2ee;
   }
   *{box-sizing:border-box;}
   body{
     margin:0;
     font-family:"Apple SD Gothic Neo","Pretendard","Segoe UI",sans-serif;
-    background:linear-gradient(180deg,#eaf6ec 0%,#f6fbf4 35%,#ffffff 100%);
-    color:var(--text-dark);
-  }
-
-  /* =================== 공통 상단 헤더 =================== */
-  .top-header{
-    max-width:1180px;
-    margin:0 auto;
-    padding:30px 32px 0;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-  }
-  .logo-mark{
-    font-size:26px;
-    font-weight:800;
-    color:#1a3f26;
-    letter-spacing:-0.02em;
-  }
-  .nav-center{
-    display:flex;
-    align-items:center;
-    gap:8px;
-    font-size:19px;
-    font-weight:800;
-    color:#1a3f26;
-  }
-  .fighting-badge{
-    display:flex;
-    align-items:center;
-    gap:8px;
-    background:#fff;
-    border:1px solid #eef2ee;
-    border-radius:999px;
-    padding:10px 20px;
-    font-size:14.5px;
-    font-weight:700;
-    color:#1a3f26;
-    box-shadow:0 8px 20px -14px rgba(31,107,58,0.35);
-    white-space:nowrap;
+    /* 폐의약품관리 페이지와 동일한 상단 그라데이션 배경 적용 */
+    background:linear-gradient(180deg,#eef7ec,#ffffff 30%);
+    color:var(--ink);
+    line-height:1.55;
   }
 
   .wrap{
-    max-width:1180px;
+    max-width:1280px;
     margin:0 auto;
-    padding:32px 32px 80px;
+    padding:24px 48px 60px;
+    position:relative;
+  }
+
+  /* =================== 공통 상단 헤더 =================== */
+  .top-row{
+    display:grid;
+    grid-template-columns:1fr auto 1fr;
+    align-items:center;
+    margin-bottom:24px;
+  }
+  .logo-mark{
+    font-size:24px;
+    font-weight:800;
+    color:#1a3f26;
+    letter-spacing:-0.02em;
+    line-height:1;
+    justify-self:start;
   }
   .eyebrow{
-    display:flex;
-    align-items:center;
-    gap:8px;
-    color:var(--green-mid);
-    font-weight:600;
-    font-size:14px;
-    letter-spacing:0.02em;
-    margin-bottom:18px;
+    color:#2d5a27;
+    font-weight:700;
+    font-size:40px;
+    cursor:pointer;
+    transition:color .15s;
+    line-height:1;
+    justify-self:center;
   }
-  .eyebrow::before{
-    content:"";
-    width:6px;height:6px;
-    background:var(--green-mid);
-    border-radius:50%;
-    display:inline-block;
+  .eyebrow:hover{
+    color:var(--green-600);
+  }
+  
+  /* [폐의약품관리] top-pill-tag 크기/여백/그림자 100% 동일화 */
+  .pill-tag{
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:30px;
+    padding:9px 18px;
+    font-size:13.5px;
+    font-weight:700;
+    color:#1a3f26;
+    box-shadow:0 6px 16px -10px rgba(31,77,54,0.3);
+    justify-self:end;
   }
 
   /* =================== 검색(랜딩) 화면 =================== */
@@ -99,58 +91,95 @@
     align-items:flex-start;
   }
   .hero-text h1{
-    font-size:44px;
-    line-height:1.25;
-    margin:0 0 16px;
+    font-size:35px;
     font-weight:800;
+    line-height:1.3;
+    margin:0 0 8px;
+    color:var(--green-900);
     letter-spacing:-0.01em;
   }
   .hero-text p{
-    font-size:16px;
-    color:var(--text-mid);
+    font-size:15.5px;
+    color:var(--ink-soft);
     margin:0;
-    line-height:1.6;
   }
 
-  .search-card{
-    margin-top:40px;
-    background:var(--bg-card);
+  .trend-section{margin-top:20px;}
+
+  /* feature banner */
+  .banner{
+    background:linear-gradient(135deg,#f5fbf4,#eaf6ec);
+    border:1px solid var(--line);
     border-radius:24px;
-    padding:14px 16px;
-    box-shadow:0 20px 50px -25px rgba(31,107,58,0.25), 0 1px 0 rgba(0,0,0,0.02);
+    padding:28px 40px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:32px;
+  }
+  .banner-illust{
+    flex-shrink:0; 
+    width:130px; 
+    height:130px; 
+    display:flex; 
+    align-items:center; 
+    justify-content:center;
+  }
+  .banner-illust svg{width:100%;height:100%;}
+  .banner-content{flex:1;}
+  .feature-row{display:flex; align-items:stretch; justify-content:space-between; gap:24px;}
+  .feature{display:flex; flex:1; align-items:flex-start; gap:14px;}
+  .feature-icon{
+    width:38px;height:38px;
+    border-radius:10px;
+    background:#fff;
+    border:1px solid var(--line);
+    display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;
+    color:var(--green-700);
+  }
+  .feature h4{margin:0 0 3px; font-size:20px; font-weight:700; color:var(--green-900);}
+  .feature span{font-size:12.5px; color:var(--ink-soft); line-height:1.4;}
+
+  .search-card{
+    margin-top:24px;
+    background:#fff;
+    border-radius:22px;
+    padding:12px 16px;
+    box-shadow:0 12px 30px -15px rgba(31,77,54,0.1);
     display:flex;
     align-items:center;
     gap:14px;
-    border:1px solid #eef2ee;
+    border:1px solid var(--line);
   }
   .search-card .icon{
     flex-shrink:0;
-    color:var(--text-light);
+    color:var(--ink-soft);
     margin-left:8px;
   }
   .search-card input{
     flex:1;
     border:none;
     outline:none;
-    font-size:17px;
-    padding:14px 0;
-    color:var(--text-dark);
+    font-size:16.5px;
+    padding:10px 0;
+    color:var(--ink);
     background:transparent;
   }
   .search-card input::placeholder{color:#aab6ad;}
   .search-btn{
-    background:var(--green-dark);
+    background:var(--green-700);
     color:#fff;
     border:none;
-    border-radius:16px;
-    padding:16px 36px;
-    font-size:16px;
+    border-radius:14px;
+    padding:14px 32px;
+    font-size:15.5px;
     font-weight:700;
     cursor:pointer;
     transition:background .15s ease, transform .1s ease;
     white-space:nowrap;
   }
-  .search-btn:hover{background:#185a30;}
+  .search-btn:hover{background:var(--green-900);}
   .search-btn:active{transform:scale(0.98);}
 
   .not-found-msg{
@@ -167,13 +196,13 @@
   }
   .not-found-msg .suggest-label{
     font-size:13px;
-    color:var(--text-mid);
+    color:var(--ink-soft);
     margin-right:2px;
   }
   .chip-btn{
     border:1px solid #f3b8b3;
     background:#fff;
-    color:var(--green-dark);
+    color:var(--green-700);
     border-radius:999px;
     padding:6px 14px;
     font-size:13px;
@@ -181,7 +210,7 @@
     cursor:pointer;
     transition:background .15s ease, border-color .15s ease;
   }
-  .chip-btn:hover{background:var(--green-pale); border-color:var(--green-mid);}
+  .chip-btn:hover{background:var(--green-100); border-color:var(--green-600);}
 
   /* =================== 자동완성 드롭다운 =================== */
   .search-card, .mini-search{position:relative;}
@@ -190,9 +219,9 @@
     left:0; right:0;
     top:calc(100% + 8px);
     background:#fff;
-    border:1px solid #eef2ee;
+    border:1px solid var(--line);
     border-radius:16px;
-    box-shadow:0 20px 40px -20px rgba(31,107,58,0.3);
+    box-shadow:0 12px 30px -15px rgba(31,77,54,0.15);
     overflow:hidden;
     z-index:20;
     display:none;
@@ -205,46 +234,36 @@
     padding:12px 18px;
     cursor:pointer;
     font-size:15px;
-    color:var(--text-dark);
+    color:var(--ink);
   }
   .ac-item .ac-tag{
     font-size:12px;
-    color:var(--text-light);
+    color:var(--ink-soft);
     font-weight:500;
   }
   .ac-item + .ac-item{border-top:1px solid var(--line);}
-  .ac-item:hover, .ac-item.active{background:var(--green-pale);}
+  .ac-item:hover, .ac-item.active{background:var(--green-50);}
   .ac-item mark{
     background:none;
-    color:var(--green-dark);
+    color:var(--green-700);
     font-weight:800;
   }
   .ac-empty{
     padding:14px 18px;
     font-size:13.5px;
-    color:var(--text-light);
+    color:var(--ink-soft);
   }
 
   /* trending section */
-  .trend-section{margin-top:56px;}
   .trend-head{
     display:flex;
     align-items:center;
     gap:8px;
     font-size:18px;
     font-weight:700;
-    margin-bottom:20px;
-  }
-  .trend-head .info-dot{
-    width:16px;height:16px;
-    border-radius:50%;
-    border:1.5px solid var(--text-light);
-    color:var(--text-light);
-    font-size:11px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    cursor:default;
+    color:var(--green-900);
+    margin-top:36px;
+    margin-bottom:16px;
   }
 
   .carousel{
@@ -257,16 +276,16 @@
     flex-shrink:0;
     width:38px;height:38px;
     border-radius:50%;
-    border:1px solid #e2e9e3;
+    border:1px solid var(--line);
     background:#fff;
-    color:var(--text-mid);
+    color:var(--ink-soft);
     display:flex;
     align-items:center;
     justify-content:center;
     cursor:pointer;
     transition:background .15s, border-color .15s;
   }
-  .nav-btn:hover{background:var(--green-pale); border-color:var(--green-mid); color:var(--green-dark);}
+  .nav-btn:hover{background:var(--green-50); border-color:var(--green-600); color:var(--green-900);}
 
   .card-track{
     display:flex;
@@ -282,7 +301,7 @@
   .supp-card{
     flex:0 0 210px;
     background:#fff;
-    border:1px solid #eef2ee;
+    border:1px solid var(--line);
     border-radius:18px;
     padding:22px 20px;
     transition:transform .15s ease, box-shadow .15s ease;
@@ -290,8 +309,8 @@
   }
   .supp-card:hover{
     transform:translateY(-4px);
-    box-shadow:0 16px 30px -18px rgba(31,107,58,0.3);
-    border-color:var(--green-mid);
+    box-shadow:0 12px 24px -12px rgba(31,77,54,0.15);
+    border-color:var(--green-600);
   }
   .supp-icon{
     width:44px;height:44px;
@@ -306,10 +325,11 @@
     font-size:17px;
     margin:0 0 4px;
     font-weight:700;
+    color:var(--green-900);
   }
   .supp-card .tag{
     font-size:13px;
-    color:var(--text-light);
+    color:var(--ink-soft);
     margin-bottom:14px;
   }
   .ok-row{
@@ -320,114 +340,71 @@
     flex-wrap:wrap;
   }
   .ok-badge{
-    background:var(--chip-bg);
-    color:var(--chip-text);
+    background:var(--green-100);
+    color:var(--green-700);
     font-weight:700;
     border-radius:6px;
     padding:3px 7px;
     font-size:11.5px;
     flex-shrink:0;
   }
-  .ok-names{color:var(--text-mid); font-weight:500;}
-
-  /* feature banner */
-  .banner{
-    margin-top:0;
-    background:linear-gradient(135deg,#f5fbf4,#eaf6ec);
-    border:1px solid #e3efe2;
-    border-radius:28px;
-    padding:44px 56px;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:40px;
-  }
-  .banner-illust{flex-shrink:0; width:170px;}
-  .banner-illust svg{width:100%;height:auto;}
-  .banner-content{flex:1;}
-  .feature-row{display:flex; align-items:stretch; justify-content:space-between; gap:24px;}
-  .feature{display:flex; flex:1; align-items:flex-start; gap:14px;}
-  .feature-icon{
-    width:38px;height:38px;
-    border-radius:10px;
-    background:#fff;
-    border:1px solid #e3efe2;
-    display:flex;align-items:center;justify-content:center;
-    flex-shrink:0;
-    color:var(--green-dark);
-  }
-  .feature h4{margin:0 0 3px; font-size:15px; font-weight:700;}
-  .feature span{font-size:12.5px; color:var(--text-light); line-height:1.4;}
+  .ok-names{color:var(--ink-soft); font-weight:500;}
 
   .disclaimer{
-    margin-top:40px;
+    margin-top:36px;
     display:flex;
     align-items:flex-start;
     gap:14px;
-    background:var(--green-pale);
+    background:var(--green-50);
+    border:1px solid var(--line);
     border-radius:16px;
     padding:18px 22px;
   }
-  .disclaimer .shield{flex-shrink:0; color:var(--green-dark); margin-top:2px;}
-  .disclaimer p{margin:0; font-size:13.5px; color:#3c5e47; line-height:1.6;}
+  .disclaimer .shield{flex-shrink:0; color:var(--green-700); margin-top:2px;}
+  .disclaimer p{margin:0; font-size:13.5px; color:var(--green-900); line-height:1.6;}
 
   /* =================== 상세(약 정보) 화면 =================== */
   #detailPage{display:none;}
   #detailPage.active{display:block;}
 
-  .topbar{
-    display:flex;
-    align-items:center;
-    gap:14px;
-    margin-bottom:18px;
-  }
-  .back-btn{
-    width:44px;height:44px;
-    border-radius:50%;
-    border:1px solid var(--line);
-    background:#fff;
-    display:flex;align-items:center;justify-content:center;
-    cursor:pointer;
-    color:var(--green-dark);
-    font-size:19px;
-    flex-shrink:0;
-    transition:background .15s ease;
-  }
-  .back-btn:hover{background:var(--green-pale);}
-
-  .detail-title{
-    font-size:40px;
-    margin:6px 0 4px;
-    font-weight:800;
-    color:var(--text-dark);
-    letter-spacing:-0.01em;
-  }
-  .detail-sub{
-    margin:0 0 26px;
-    color:var(--text-mid);
-    font-size:15px;
-  }
-
   .mini-search{
     display:flex;
     align-items:center;
-    gap:10px;
+    gap:8px;
     background:#fff;
     border:1px solid var(--line);
     border-radius:999px;
-    padding:12px 20px;
-    margin:0 0 32px;
-    max-width:480px;
-    box-shadow:0 10px 28px -20px rgba(31,107,58,0.3);
+    padding:9px 16px;
+    margin:0 0 24px;
+    max-width:320px;
+    box-shadow:0 8px 20px -12px rgba(31,77,54,0.15);
   }
-  .mini-search input{border:none;outline:none;flex:1;font-size:14.5px;background:transparent;color:var(--text-dark);}
-  .mini-search button{border:none;background:none;color:var(--green-mid);cursor:pointer;font-size:14px;font-weight:700;}
+  .mini-search input{
+    border:none;
+    outline:none;
+    flex:1;
+    font-size:13.5px;
+    background:transparent;
+    color:var(--ink);
+    min-width:0;
+  }
+  .mini-search input::placeholder{color:#aab6ad;}
+  .mini-search button{
+    border:none;
+    background:none;
+    color:var(--green-600);
+    cursor:pointer;
+    font-size:13.5px;
+    font-weight:700;
+    padding:0;
+    flex-shrink:0;
+  }
 
   .detail-card{
     background:#fff;
     border-radius:28px;
     padding:48px;
-    box-shadow:0 24px 60px -32px rgba(31,107,58,0.22);
+    box-shadow:0 12px 30px -15px rgba(31,77,54,0.08);
     border:1px solid var(--line);
   }
 
@@ -438,7 +415,8 @@
     align-items:start;
   }
   .hero-img{
-    background:var(--green-pale);
+    background:var(--green-50);
+    border:1px solid var(--line);
     border-radius:22px;
     height:260px;
     display:flex;
@@ -450,7 +428,8 @@
   .hero-img img{width:100%;height:100%;object-fit:cover;}
 
   .basic-info-box{
-    background:var(--green-pale);
+    background:var(--green-50);
+    border:1px solid var(--line);
     border-radius:20px;
     padding:22px 16px;
     margin-top:28px;
@@ -460,7 +439,7 @@
     margin:0 0 16px;
     font-size:15px;
     font-weight:800;
-    color:var(--green-dark);
+    color:var(--green-900);
   }
   .bi-grid{
     display:grid;
@@ -480,13 +459,14 @@
     border-radius:7px;
     background:#fff;
     display:flex;align-items:center;justify-content:center;
-    font-size:12px;
-    color:var(--green-mid);
+    font-size:15px;
+    color:var(--green-600);
     margin-top:1px;
+    border:1px solid var(--line);
   }
-  .bi-row .bi-text{font-size:13px; line-height:1.5;}
-  .bi-row .bi-text .bi-label{display:block; color:var(--text-light); font-size:11.5px; margin-bottom:1px;}
-  .bi-row .bi-text .bi-value{display:block; color:var(--text-dark); font-weight:700;}
+  .bi-row .bi-text{font-size:15px; line-height:1.5;}
+  .bi-row .bi-text .bi-label{display:block; color:var(--ink-soft); font-size:11.5px; margin-bottom:1px;}
+  .bi-row .bi-text .bi-value{display:block; color:var(--ink); font-weight:700;}
 
   .hero-info .name-row{
     display:flex;
@@ -499,11 +479,11 @@
     font-size:36px;
     margin:0;
     font-weight:800;
-    color:var(--text-dark);
+    color:var(--green-900);
   }
   .badge{
-    background:var(--green-pale);
-    color:var(--green-dark);
+    background:var(--green-100);
+    color:var(--green-900);
     font-size:13px;
     padding:5px 14px;
     border-radius:999px;
@@ -513,14 +493,14 @@
   .meta-line{
     font-size:16px;
     margin:8px 0;
-    color:var(--text-dark);
+    color:var(--ink);
   }
-  .meta-line b{color:var(--green-dark);font-weight:700;}
+  .meta-line b{color:var(--green-900);font-weight:700;}
   .desc{
     margin-top:18px;
     font-size:15.5px;
     line-height:1.85;
-    color:var(--text-mid);
+    color:var(--ink-soft);
   }
 
   .divider{height:1px; background:var(--line); margin:44px 0;}
@@ -532,22 +512,13 @@
   }
   .col h3{
     font-size:16px;
-    color:var(--text-dark);
+    color:var(--green-900);
     margin:0 0 20px;
     font-weight:800;
     display:flex;
     align-items:center;
     gap:8px;
   }
-  .col h3 .col-tag{
-    font-size:10.5px;
-    font-weight:700;
-    padding:2px 8px;
-    border-radius:999px;
-    background:var(--green-pale);
-    color:var(--green-dark);
-  }
-  .col h3 .col-tag.warn{background:var(--warn-bg); color:var(--warn-text);}
   .item{
     display:flex;
     align-items:flex-start;
@@ -563,22 +534,18 @@
     margin-top:1px;
     font-weight:700;
   }
-  .item.good .ico{background:var(--green-pale);color:var(--green-mid);}
-  .item.ok .ico{background:var(--green-pale);color:var(--green-mid);}
-  .item.dot .ico{background:var(--green-pale);color:var(--green-mid);}
-  .item.check .ico{background:var(--green-pale);color:var(--green-mid);}
-  .item.caution .ico{background:var(--warn-bg);color:var(--warn-text);}
-  .item.bad .ico{background:var(--warn-bg);color:var(--warn-text);}
+  .item.good .ico, .item.ok .ico, .item.dot .ico, .item.check .ico{background:var(--green-100);color:var(--green-700);}
+  .item.caution .ico, .item.bad .ico{background:var(--warn-bg);color:var(--warn-text);}
   .item .item-text b{
     display:block;
     font-size:14px;
-    color:var(--text-dark);
+    color:var(--ink);
     margin-bottom:3px;
     font-weight:700;
   }
   .item .item-text span{
     font-size:12.5px;
-    color:var(--text-light);
+    color:var(--ink-soft);
     line-height:1.55;
   }
 
@@ -602,8 +569,8 @@
     border:1px solid var(--warn-line);
   }
   .consult-box{
-    background:var(--green-pale);
-    border:1px solid #cfe9d2;
+    background:var(--green-50);
+    border:1px solid var(--line);
   }
   .overdose-box .ico, .consult-box .ico{
     width:34px;height:34px;
@@ -611,273 +578,265 @@
     background:#fff;
     display:flex;align-items:center;justify-content:center;
     flex-shrink:0;
-    font-size:17px;
+    font-size:16px;
   }
   .overdose-box .ico{color:var(--warn-text);}
-  .consult-box .ico{color:var(--green-dark);}
-  .overdose-box b{display:block; color:var(--warn-text); font-size:18px; margin-bottom:8px;}
-  .consult-box b{display:block; color:var(--green-dark); font-size:18px; margin-bottom:8px;}
+  .consult-box .ico{color:var(--green-700);}
+  .overdose-box b{display:block; color:var(--warn-text); font-size:20px; margin-bottom:8px;}
+  .consult-box b{display:block; color:var(--green-900); font-size:20px; margin-bottom:8px;}
   .overdose-box p{margin:0 0 6px; font-size:16px; color:#7a2c24; line-height:1.7;}
-  .consult-box p{margin:0 0 6px; font-size:16px; color:#27543a; line-height:1.7;}
+  .consult-box p{margin:0 0 6px; font-size:16px; color:var(--ink-soft); line-height:1.7;}
   .overdose-box .strong-line, .consult-box .strong-line{font-weight:700;}
 
-  @media (max-width:760px){
-    .wrap{padding:40px 18px 60px;}
-    .hero{flex-direction:column;}
-    .hero-text h1{font-size:30px;}
+  @media (max-width:1000px){
+    .wrap{padding:20px 20px 40px;}
+    .top-row{grid-template-columns:auto 1fr auto; gap:12px; margin-bottom:16px;}
+    .eyebrow{font-size:17px;}
+    .hero-text h1{font-size:28px;}
+    .banner{padding:24px; flex-direction:column; gap:20px;}
+    .feature-row{flex-direction:column; gap:16px;}
     .search-card{flex-wrap:wrap; border-radius:18px;}
     .search-btn{width:100%;}
-    .banner{padding:32px;}
-    .feature-row{flex-direction:column; gap:18px;}
-
     .detail-card{padding:26px;}
     .hero-row{grid-template-columns:1fr;}
     .hero-img{height:220px;}
-    .hero-info .name-row h2{font-size:28px;}
     .grid-4{grid-template-columns:1fr;}
     .bottom-boxes{grid-template-columns:1fr;}
-    .detail-title{font-size:30px;}
   }
 </style>
 </head>
 <body>
 
-<!-- =================== 공통 상단 헤더 =================== -->
-<div class="top-header">
-  <img src="logo.png" height="100" onclick="location.href='메인페이지.html'" style="cursor:pointer;">
-  <div class="nav-center">
-    <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 8C8 10 5.9 16.17 3.82 21.34l1.89.66.95-2.3c.48.17.98.3 1.34.3C19 20 22 3 22 3c-1 2-8 2.25-13 3.25S2 11.5 2 13.5c0 1.43.74 2.84 1.5 3.5C2.74 12.41 6.97 9.13 17 8z"/></svg>
+<div class="wrap">
+
+  <!-- 메인 헤더 -->
+  <div class="top-row">
+    <img src="logo.png" height="100" onclick="location.href='메인페이지.html'" style="cursor:pointer;">
+    <div class="eyebrow" onclick="goToSearch()">
       약 검색
-  </div>
-  <div class="fighting-badge">
-    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 8C8 10 5.9 16.17 3.82 21.34l1.89.66.95-2.3c.48.17.98.3 1.34.3C19 20 22 3 22 3c-1 2-8 2.25-13 3.25S2 11.5 2 13.5c0 1.43.74 2.84 1.5 3.5C2.74 12.41 6.97 9.13 17 8z"/></svg>
+    </div>
+    <div class="pill-tag">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 8C8 10 5.9 16.17 3.82 21.34l1.89.66.95-2.3c.48.17.98.3 1.34.3C19 20 22 3 22 3c-1 2-8 2.25-13 3.25S2 11.5 2 13.5c0 1.43.74 2.84 1.5 3.5C2.74 12.41 6.97 9.13 17 8z"/></svg>
       오늘도 파이팅!
-  </div>
-</div>
-
-<!-- =================== 검색(랜딩) 화면 =================== -->
-<div class="wrap" id="searchPage">
-
-  <div class="hero">
-    <div class="hero-text">
-      <h1>약 이름으로 검색하세요</h1>
-      <p>약 DB에서 성분, 복용법, 주의사항, 다른 약과의 상호작용을 확인하세요.</p>
     </div>
   </div>
 
-  <div class="trend-section" style="margin-top:40px;">
-    <div class="banner">
-      <div class="banner-illust">
-        <svg viewBox="0 0 200 220" fill="none">
-          <ellipse cx="100" cy="200" rx="70" ry="14" fill="#dceedb"/>
-          <rect x="55" y="60" width="90" height="120" rx="20" fill="#eaf6ec" stroke="#bfe6c4" stroke-width="3"/>
-          <rect x="55" y="60" width="90" height="46" rx="20" fill="#7fce8c"/>
-          <circle cx="100" cy="38" r="10" fill="#bfe6c4"/>
-          <rect x="92" y="20" width="16" height="26" rx="6" fill="#bfe6c4"/>
-          <path d="M85 130 h30 M100 115 v30" stroke="#2f8f4e" stroke-width="8" stroke-linecap="round"/>
-          <circle cx="78" cy="150" r="10" fill="#f6c95c"/>
-          <circle cx="120" cy="155" r="7" fill="#9fdaa8"/>
-          <ellipse cx="30" cy="90" rx="16" ry="8" fill="#9fdaa8" transform="rotate(20 30 90)"/>
-          <ellipse cx="170" cy="100" rx="16" ry="8" fill="#bfe6c4" transform="rotate(-20 170 100)"/>
-        </svg>
+  <!-- =================== 검색(랜딩) 화면 =================== -->
+  <div id="searchPage">
+
+    <div class="hero">
+      <div class="hero-text">
+        <h1>약 이름으로 검색하세요</h1>
+        <p>약 DB에서 성분, 복용법, 주의사항, 다른 약과의 상호작용을 확인하세요.</p>
       </div>
-      <div class="banner-content">
-        <div class="feature-row">
-          <div class="feature">
-            <div class="feature-icon">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg>
-            </div>
-            <div>
-              <h4>약 정보</h4>
-              <span>성분, 효능, 복용법, 주의사항</span>
-            </div>
-          </div>
+    </div>
 
-          <div class="feature">
-            <div class="feature-icon">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+    <div class="trend-section">
+      <div class="banner">
+        <div class="banner-illust">
+          <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g transform="rotate(-35 42 45)">
+              <rect x="22" y="33" width="40" height="24" rx="12" fill="#ffffff" stroke="#1f4d36" stroke-width="3"/>
+              <path d="M22 45 C22 38.37 27.37 33 34 33 L42 33 L42 57 L34 57 C27.37 57 22 51.63 22 45 Z" fill="#2f7a4f"/>
+            </g>
+            <circle cx="68" cy="62" r="16" fill="#ffffff" stroke="#2f7a4f" stroke-width="3"/>
+            <line x1="56" y1="62" x2="80" y2="62" stroke="#2f7a4f" stroke-width="2.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="banner-content">
+          <div class="feature-row">
+            <div class="feature">
+              <div class="feature-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg>
+              </div>
+              <div>
+                <h4>약 정보</h4>
+                <span>성분, 효능, 복용법, 주의사항</span>
+              </div>
             </div>
-            <div>
-              <h4>상호작용 체크</h4>
-              <span>다른 약과의 상호작용 확인</span>
-            </div>
-          </div>
 
-          <div class="feature">
-            <div class="feature-icon">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-11V5l-8-3-8 3v6c0 7 8 11 8 11z"/><polyline points="9 12 11 14 15 10"/></svg>
+            <div class="feature">
+              <div class="feature-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+              </div>
+              <div>
+                <h4>상호작용 체크</h4>
+                <span>다른 약과의 상호작용 확인</span>
+              </div>
             </div>
-            <div>
-              <h4>함께 복용 가능 성분</h4>
-              <span>함께 먹어도 되는 약/영양제 추천</span>
+
+            <div class="feature">
+              <div class="feature-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-11V5l-8-3-8 3v6c0 7 8 11 8 11z"/><polyline points="9 12 11 14 15 10"/></svg>
+              </div>
+              <div>
+                <h4>함께 복용 가능 성분</h4>
+                <span>함께 먹어도 되는 약/영양제 추천</span>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <div class="search-card" style="margin-top:32px;">
-    <span class="icon">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-    </span>
-    <input type="text" id="searchInput" placeholder="어떤 약을 검색하시겠어요? (예: 타이레놀)" autocomplete="off" />
-    <button class="search-btn" id="searchBtn">검색</button>
-    <div class="ac-dropdown" id="searchAc"></div>
-  </div>
-  <div class="not-found-msg" id="notFoundMsg"></div>
-
-  <div class="trend-section">
-    <div class="trend-head">
-      요즘 많이 검색하는 약 & 함께 먹어도 되는 성분
-      <span class="info-dot">i</span>
+    <div class="search-card">
+      <span class="icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <input type="text" id="searchInput" placeholder="어떤 약을 검색하시겠어요? (예: 타이레놀)" autocomplete="off" />
+      <button class="search-btn" id="searchBtn">검색</button>
+      <div class="ac-dropdown" id="searchAc"></div>
     </div>
+    <div class="not-found-msg" id="notFoundMsg"></div>
 
-    <div class="carousel">
-      <button class="nav-btn" id="prevBtn">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
-      </button>
+    <div class="trend-section">
+      <div class="trend-head">
+        요즘 많이 검색하는 약 & 함께 먹어도 되는 성분
+      </div>
 
-      <div class="card-track" id="track">
-        <div class="supp-card" data-drug="인데놀">
-          <div class="supp-icon" style="background:#e1f3e3;color:#3a9750;">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="9"/></svg>
+      <div class="carousel">
+        <button class="nav-btn" id="prevBtn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+
+        <div class="card-track" id="track">
+          <div class="supp-card" data-drug="인데놀">
+            <div class="supp-icon" style="background:#e1f3e3;color:#2f7a4f;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="9"/></svg>
+            </div>
+            <h3>인데놀</h3>
+            <div class="tag">고혈압 · 부정맥 · 불안</div>
+            <div class="ok-row"><span class="ok-badge">함께 OK</span><span class="ok-names">비타민C, 종합비타민</span></div>
           </div>
-          <h3>인데놀</h3>
-          <div class="tag">고혈압 · 부정맥 · 불안</div>
-          <div class="ok-row"><span class="ok-badge">함께 OK</span><span class="ok-names">비타민C, 종합비타민</span></div>
-        </div>
 
-        <div class="supp-card" data-drug="타이레놀">
-          <div class="supp-icon" style="background:#e2ecfc;color:#3a6fd0;">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M4.93 4.93a4 4 0 0 1 5.66 0L12 6.34l1.41-1.41a4 4 0 1 1 5.66 5.66L12 17.66 4.93 10.6a4 4 0 0 1 0-5.67z"/></svg>
+          <div class="supp-card" data-drug="타이레놀">
+            <div class="supp-icon" style="background:#e2ecfc;color:#3a6fd0;">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M4.93 4.93a4 4 0 0 1 5.66 0L12 6.34l1.41-1.41a4 4 0 1 1 5.66 5.66L12 17.66 4.93 10.6a4 4 0 0 1 0-5.67z"/></svg>
+            </div>
+            <h3>타이레놀</h3>
+            <div class="tag">두통 · 발열</div>
+            <div class="ok-row"><span class="ok-badge">함께 OK</span><span class="ok-names">비타민C, 마그네슘</span></div>
           </div>
-          <h3>타이레놀</h3>
-          <div class="tag">두통 · 발열</div>
-          <div class="ok-row"><span class="ok-badge">함께 OK</span><span class="ok-names">비타민C, 마그네슘</span></div>
-        </div>
 
-        <div class="supp-card" data-drug="아스피린">
-          <div class="supp-icon" style="background:#fbe3df;color:#d6604c;">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M5 9c0-2.2 1.8-4 4-4h6c2.2 0 4 1.8 4 4v6c0 2.2-1.8 4-4 4H9c-2.2 0-4-1.8-4-4V9z"/></svg>
+          <div class="supp-card" data-drug="아스피린">
+            <div class="supp-icon" style="background:#fbe3df;color:#c4502e;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M5 9c0-2.2 1.8-4 4-4h6c2.2 0 4 1.8 4 4v6c0 2.2-1.8 4-4 4H9c-2.2 0-4-1.8-4-4V9z"/></svg>
+            </div>
+            <h3>아스피린</h3>
+            <div class="tag">진통 · 혈전 예방</div>
+            <div class="ok-row"><span class="ok-badge">함께 OK</span><span class="ok-names">비타민D, 오메가3</span></div>
           </div>
-          <h3>아스피린</h3>
-          <div class="tag">진통 · 혈전 예방</div>
-          <div class="ok-row"><span class="ok-badge">함께 OK</span><span class="ok-names">비타민D, 오메가3</span></div>
-        </div>
 
-        <div class="supp-card">
-          <div class="supp-icon" style="background:#fdf1d6;color:#e0a93a;">C</div>
-          <h3>비타민 C</h3>
-          <div class="tag">면역력 · 항산화</div>
-          <div class="ok-row"><span class="ok-badge">함께 OK</span><span class="ok-names">아연, 비타민D</span></div>
-        </div>
-
-        <div class="supp-card">
-          <div class="supp-icon" style="background:#ece3fb;color:#7a4cd6;">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="9" width="6" height="11" rx="2"/><rect x="13" y="9" width="6" height="11" rx="2"/><rect x="8" y="4" width="8" height="6" rx="1.5"/></svg>
+          <div class="supp-card">
+            <div class="supp-icon" style="background:#fdf1d6;color:#e0a93a;">C</div>
+            <h3>비타민 C</h3>
+            <div class="tag">면역력 · 항산화</div>
+            <div class="ok-row"><span class="ok-badge">함께 OK</span><span class="ok-names">아연, 비타민D</span></div>
           </div>
-          <h3>마그네슘</h3>
-          <div class="tag">근육 · 신경 안정</div>
-          <div class="ok-row"><span class="ok-badge">함께 OK</span><span class="ok-names">비타민B6, 칼슘</span></div>
+
+          <div class="supp-card">
+            <div class="supp-icon" style="background:#ece3fb;color:#7a4cd6;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="9" width="6" height="11" rx="2"/><rect x="13" y="9" width="6" height="11" rx="2"/><rect x="8" y="4" width="8" height="6" rx="1.5"/></svg>
+            </div>
+            <h3>마그네슘</h3>
+            <div class="tag">근육 · 신경 안정</div>
+            <div class="ok-row"><span class="ok-badge">함께 OK</span><span class="ok-names">비타민B6, 칼슘</span></div>
+          </div>
+        </div>
+
+        <button class="nav-btn" id="nextBtn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="disclaimer">
+      <span class="shield">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-11V5l-8-3-8 3v6c0 7 8 11 8 11z"/><polyline points="9 12 11 14 15 10"/></svg>
+      </span>
+      <p>의약품 정보는 일반적인 참고용이며, 개인의 건강 상태에 따라 다를 수 있습니다.<br>정확한 복용은 전문가와 상담 후 결정하세요.</p>
+    </div>
+
+  </div>
+
+  <!-- =================== 상세(약 정보) 화면 =================== -->
+  <div id="detailPage">
+    <div class="mini-search">
+      <span style="color:var(--ink-soft);font-size:13px;">🔍</span>
+      <input type="text" id="detailSearchInput" placeholder="다른 약 이름 검색하기" autocomplete="off">
+      <button id="detailSearchBtn">검색</button>
+      <div class="ac-dropdown" id="detailAc"></div>
+    </div>
+
+    <div class="detail-card">
+      <div class="hero-row">
+        <div class="hero-img" id="dImage"></div>
+        <div class="hero-info">
+          <div class="name-row">
+            <h2 id="dName">-</h2>
+            <span class="badge" id="dCategoryBadge">일반의약품</span>
+          </div>
+          <div class="meta-line"><b>성분</b> : <span id="dIngredient"></span></div>
+          <div class="meta-line"><b>분류</b> : <span id="dClass"></span></div>
+          <div class="desc" id="dDesc"></div>
         </div>
       </div>
 
-      <button class="nav-btn" id="nextBtn">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
-      </button>
-    </div>
-  </div>
-
-  <div class="disclaimer">
-    <span class="shield">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-11V5l-8-3-8 3v6c0 7 8 11 8 11z"/><polyline points="9 12 11 14 15 10"/></svg>
-    </span>
-    <p>의약품 정보는 일반적인 참고용이며, 개인의 건강 상태에 따라 다를 수 있습니다.<br>정확한 복용은 전문가와 상담 후 결정하세요.</p>
-  </div>
-
-</div>
-
-<!-- =================== 상세(약 정보) 화면 =================== -->
-<div class="wrap" id="detailPage">
-  <div class="mini-search">
-    <span style="color:var(--text-light);font-size:14px;">🔍</span>
-    <input type="text" id="detailSearchInput" placeholder="다른 약 이름 검색하기" autocomplete="off">
-    <button id="detailSearchBtn">검색</button>
-    <div class="ac-dropdown" id="detailAc"></div>
-  </div>
-
-  <div class="detail-card">
-    <div class="hero-row">
-      <div class="hero-img" id="dImage"></div>
-      <div class="hero-info">
-        <div class="name-row">
-          <h2 id="dName">-</h2>
-          <span class="badge" id="dCategoryBadge">일반의약품</span>
-        </div>
-        <div class="meta-line"><b>성분</b> : <span id="dIngredient"></span></div>
-        <div class="meta-line"><b>분류</b> : <span id="dClass"></span></div>
-        <div class="desc" id="dDesc"></div>
-      </div>
-    </div>
-
-    <div class="basic-info-box">
-      <h4>기본 정보</h4>
-      <div class="bi-grid">
-        <div class="bi-row"><div class="bi-ico">⏱</div><div class="bi-text"><span class="bi-label">복용 방법</span><span class="bi-value" id="biUsage"></span></div></div>
-        <div class="bi-row"><div class="bi-ico">↻</div><div class="bi-text"><span class="bi-label">복용 간격</span><span class="bi-value" id="biInterval"></span></div></div>
-        <div class="bi-row"><div class="bi-ico">●</div><div class="bi-text"><span class="bi-label">제형 / 색상</span><span class="bi-value" id="biForm"></span></div></div>
-        <div class="bi-row"><div class="bi-ico">🔒</div><div class="bi-text"><span class="bi-label">보관 방법</span><span class="bi-value" id="biStorage"></span></div></div>
-        <div class="bi-row"><div class="bi-ico">📅</div><div class="bi-text"><span class="bi-label">유효 기간</span><span class="bi-value" id="biExpiry"></span></div></div>
-        <div class="bi-row"><div class="bi-ico">✓</div><div class="bi-text"><span class="bi-label">전문의약품 여부</span><span class="bi-value" id="biOtc"></span></div></div>
-      </div>
-    </div>
-
-    <div class="divider"></div>
-
-    <div class="grid-4">
-      <div class="col">
-        <h3>이 약의 기능</h3>
-        <div id="dFunctions"></div>
-      </div>
-      <div class="col">
-        <h3>함께 복용해도 되는 약 / 비타민</h3>
-        <div id="dGood"></div>
-      </div>
-      <div class="col">
-        <h3>함께 복용하면 안 되는 약</h3>
-        <div id="dBad"></div>
-      </div>
-      <div class="col">
-        <h3>복용 시 주의사항</h3>
-        <div class="precaution-list" id="dPrecautions"></div>
-      </div>
-    </div>
-
-    <div class="bottom-boxes">
-      <div class="overdose-box">
-        <div class="ico">⚠</div>
-        <div>
-          <b>과다 복용 시 증상</b>
-          <p id="dOverdose"></p>
-          <p class="strong-line">즉시 병원에 방문하거나 의사와 상담하세요.</p>
+      <div class="basic-info-box">
+        <div class="bi-grid">
+          <div class="bi-row"><div class="bi-ico">⏱</div><div class="bi-text"><span class="bi-label">복용 방법</span><span class="bi-value" id="biUsage"></span></div></div>
+          <div class="bi-row"><div class="bi-ico">↻</div><div class="bi-text"><span class="bi-label">복용 간격</span><span class="bi-value" id="biInterval"></span></div></div>
+          <div class="bi-row"><div class="bi-ico">●</div><div class="bi-text"><span class="bi-label">제형 / 색상</span><span class="bi-value" id="biForm"></span></div></div>
+          <div class="bi-row"><div class="bi-ico">🔒</div><div class="bi-text"><span class="bi-label">보관 방법</span><span class="bi-value" id="biStorage"></span></div></div>
+          <div class="bi-row"><div class="bi-ico">📅</div><div class="bi-text"><span class="bi-label">유효 기간</span><span class="bi-value" id="biExpiry"></span></div></div>
+          <div class="bi-row"><div class="bi-ico">✓</div><div class="bi-text"><span class="bi-label">전문의약품 여부</span><span class="bi-value" id="biOtc"></span></div></div>
         </div>
       </div>
-      <div class="consult-box">
-        <div class="ico">✓</div>
-        <div>
-          <b>이런 증상이 나타나면 복용을 중단하고 의사와 상담하세요</b>
-          <p id="dConsult"></p>
+
+      <div class="divider"></div>
+
+      <div class="grid-4">
+        <div class="col">
+          <h3>이 약의 기능</h3>
+          <div id="dFunctions"></div>
+        </div>
+        <div class="col">
+          <h3>함께 복용해도 되는 약 / 비타민</h3>
+          <div id="dGood"></div>
+        </div>
+        <div class="col">
+          <h3>함께 복용하면 안 되는 약</h3>
+          <div id="dBad"></div>
+        </div>
+        <div class="col">
+          <h3>복용 시 주의사항</h3>
+          <div class="precaution-list" id="dPrecautions"></div>
+        </div>
+      </div>
+
+      <div class="bottom-boxes">
+        <div class="overdose-box">
+          <div class="ico">⚠</div>
+          <div>
+            <b>과다 복용 시 증상</b>
+            <p id="dOverdose"></p>
+            <p class="strong-line">즉시 병원에 방문하거나 의사와 상담하세요.</p>
+          </div>
+        </div>
+        <div class="consult-box">
+          <div class="ico">✓</div>
+          <div>
+            <b>이런 증상이 나타나면 복용을 중단하고 의사와 상담하세요</b>
+            <p id="dConsult"></p>
+          </div>
         </div>
       </div>
     </div>
   </div>
+
 </div>
 
 <script>
-/* =========================================================
-   약 데이터베이스 — 새 약을 추가하려면 객체를 더 넣으면 됩니다.
-========================================================= */
 const DRUGS = [
   {
     name: "인데놀",
@@ -921,7 +880,7 @@ const DRUGS = [
     ],
     overdose: "심한 서맥, 저혈압, 호흡곤란, 어지러움, 의식 저하 등이 나타날 수 있습니다.",
     consult: "심한 어지러움, 실신, 호흡곤란, 손발 차가움, 우울감, 수면장애, 발진 등",
-    color: "#2f8f4e"
+    color: "#2f7a4f"
   },
   {
     name: "타이레놀",
@@ -996,13 +955,10 @@ const DRUGS = [
     ],
     overdose: "이명, 청력 저하, 구토, 과호흡, 의식 저하 등이 나타날 수 있습니다.",
     consult: "검은 변, 토혈, 심한 속쓰림, 이명, 호흡곤란, 두드러기 등",
-    color: "#d6604c"
+    color: "#c4502e"
   }
 ];
 
-/* =========================================================
-   화면 전환 로직
-========================================================= */
 const searchPage = document.getElementById('searchPage');
 const detailPage = document.getElementById('detailPage');
 const searchInput = document.getElementById('searchInput');
@@ -1011,12 +967,10 @@ const notFoundMsg = document.getElementById('notFoundMsg');
 const detailSearchInput = document.getElementById('detailSearchInput');
 const detailSearchBtn = document.getElementById('detailSearchBtn');
 
-/* 공백/대소문자 무시 정규화 */
 function normalize(s){
   return (s || '').trim().replace(/\s+/g, '').toLowerCase();
 }
 
-/* 오타 허용을 위한 레벤슈타인 거리 */
 function levenshtein(a, b){
   const m = a.length, n = b.length;
   if(m === 0) return n;
@@ -1037,7 +991,6 @@ function levenshtein(a, b){
   return dp[m][n];
 }
 
-/* 입력어와 가장 관련있는 약들을 점수순으로 반환 (0=완전일치, 낮을수록 관련도 높음) */
 function scoreDrugs(query){
   const q = normalize(query);
   if(!q) return [];
@@ -1060,7 +1013,6 @@ function getSuggestions(query, limit=6){
   return scoreDrugs(query).slice(0, limit).map(x => x.drug);
 }
 
-/* 검색 실행 시 사용: 정확/부분/오타허용 매칭 중 가장 근접한 약 하나 반환 */
 function findDrug(query){
   const q = (query || '').trim();
   if(!q) return null;
@@ -1071,7 +1023,6 @@ function findDrug(query){
 function pillSvg(color){
   return `<svg viewBox="0 0 230 230" xmlns="http://www.w3.org/2000/svg">
     <rect width="230" height="230" fill="none"/>
-    <!-- 알약 박스 -->
     <rect x="40" y="34" width="100" height="150" rx="10" fill="#ffffff" stroke="${color}" stroke-width="2.5"/>
     <rect x="40" y="34" width="100" height="46" rx="10" fill="${color}"/>
     <rect x="52" y="50" width="56" height="7" rx="3.5" fill="#ffffff" opacity="0.9"/>
@@ -1080,13 +1031,11 @@ function pillSvg(color){
     <rect x="52" y="108" width="50" height="5" rx="2.5" fill="${color}" opacity="0.25"/>
     <rect x="52" y="150" width="76" height="20" rx="6" fill="${color}" opacity="0.12" stroke="${color}" stroke-width="1.2"/>
     <text x="90" y="163" font-size="10" text-anchor="middle" fill="${color}" font-family="sans-serif" font-weight="700">100mg</text>
-    <!-- 블리스터 팩 -->
     <rect x="118" y="120" width="92" height="58" rx="10" fill="#f3f7f3" stroke="${color}" stroke-width="2"/>
     <g>
       ${[0,1,2,3].map(c=>`<circle cx="${134+c*20}" cy="138" r="7.5" fill="#ffffff" stroke="${color}" stroke-width="1.6"/>`).join('')}
       ${[0,1,2,3].map(c=>`<circle cx="${134+c*20}" cy="160" r="7.5" fill="#ffffff" stroke="${color}" stroke-width="1.6"/>`).join('')}
     </g>
-    <!-- 잎 장식 -->
     <ellipse cx="200" cy="60" rx="16" ry="8" fill="${color}" opacity="0.25" transform="rotate(-25 200 60)"/>
     <ellipse cx="40" cy="200" rx="14" ry="7" fill="${color}" opacity="0.18" transform="rotate(18 40 200)"/>
   </svg>`;
@@ -1130,7 +1079,7 @@ function showDetail(drug){
   document.getElementById('dIngredient').textContent = drug.ingredient;
   document.getElementById('dClass').textContent = drug.classification;
   document.getElementById('dDesc').innerHTML = drug.description.replace(/\. /g, '.<br>');
-  document.getElementById('dImage').innerHTML = pillSvg(drug.color || '#2f8f4e');
+  document.getElementById('dImage').innerHTML = pillSvg(drug.color || '#2f7a4f');
 
   const bi = drug.basicInfo || {};
   document.getElementById('biUsage').textContent = bi.usage || '-';
@@ -1147,7 +1096,7 @@ function showDetail(drug){
   document.getElementById('dOverdose').textContent = drug.overdose;
   document.getElementById('dConsult').textContent = drug.consult || '';
 
-  searchPage.classList.add('hidden');
+  searchPage.style.display = 'none';
   detailPage.classList.add('active');
   window.scrollTo({top:0, behavior:'smooth'});
 }
@@ -1175,17 +1124,13 @@ function goToDetail(query){
 
 function goToSearch(){
   detailPage.classList.remove('active');
-  searchPage.classList.remove('hidden');
+  searchPage.style.display = 'block';
   searchInput.value = '';
 }
 
-/* =========================================================
-   자동완성 드롭다운
-========================================================= */
 function highlightMatch(name, query){
   const idx = normalize(name).indexOf(normalize(query));
-  if(idx === -1) return name; // 오타 허용 매칭이라 원문에 안 나올 수 있음
-  // normalize는 공백 제거를 하므로, 원문 기준 대략적인 위치로 강조 (원문에 공백 없다는 전제하에 정확)
+  if(idx === -1) return name;
   const before = name.slice(0, idx);
   const match = name.slice(idx, idx + query.trim().length);
   const after = name.slice(idx + query.trim().length);

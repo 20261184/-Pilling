@@ -5,96 +5,106 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Pilling</title>
 <style>
+  /* [폐의약품 관리] 페이지 기준 색상 변수 통일 */
   :root{
-    --green-dark:#1f6b3a;
-    --green-deep:#1a4d2c;
-    --green-mid:#2f8f4e;
-    --green-pale:#eaf3ea;
-    --green-line:#dbe8db;
-    --text-dark:#1c2b22;
-    --text-mid:#5b6b60;
-    --text-light:#9aa79e;
-    --cream:#f7f8f4;
+    --green-900:#1f4d36;
+    --green-700:#2f7a4f;
+    --green-600:#3c9461;
+    --green-100:#e7f3ea;
+    --green-50:#f4faf6;
+    --paper:#fbfaf6;
+    --ink:#1b2620;
+    --ink-soft:#5b6a60;
+    --line:#dde7df;
+    --danger:#c4502e;
+    --warn-bg:#fdeceb;
+    --warn-line:#f3b8b3;
+    --warn-text:#c0392b;
   }
   *{box-sizing:border-box;}
   body{
     margin:0;
     font-family:"Apple SD Gothic Neo","Pretendard","Segoe UI",sans-serif;
+    /* [폐의약품 관리] 페이지 기준 상단 그라데이션 배경 적용 */
     background:linear-gradient(180deg,#eef7ec,#ffffff 30%);
-    color:var(--text-dark);
+    color:var(--ink);
+    line-height:1.55;
   }
+
   .wrap{
     max-width:1280px;
     margin:0 auto;
-    padding:60px 48px 90px;
+    padding:24px 48px 60px;
     position:relative;
   }
 
+  /* =================== 공통 상단 헤더 =================== */
   .top-row{
     display:grid;
     grid-template-columns:1fr auto 1fr;
     align-items:center;
-    margin-bottom:36px;
+    margin-bottom:24px;
   }
   .logo-mark{
     font-size:24px;
     font-weight:800;
-    color:#1a3f26;
+    color:var(--green-900);
     letter-spacing:-0.02em;
+    line-height:1;
     justify-self:start;
   }
+  
   .eyebrow{
     display:inline-flex;
     align-items:center;
     gap:8px;
-    color:#1a3f26;
-    font-weight:800;
-    font-size:19px;
+    color:#2d5a27;
+    font-weight:700;
+    font-size:40px;
+    line-height:1;
     justify-self:center;
+    cursor:pointer;
+    transition:color .15s;
   }
+  .eyebrow:hover{
+    color:var(--green-600);
+  }
+
+  /* [폐의약품 관리] top-pill-tag 크기/여백/그림자 100% 동일화 */
   .pill-tag{
     display:inline-flex;
     align-items:center;
     gap:7px;
     background:#fff;
-    border:1px solid var(--green-line);
+    border:1px solid var(--line);
     border-radius:30px;
     padding:9px 18px;
     font-size:13.5px;
     font-weight:700;
-    color:#1a3f26;
-    box-shadow:0 6px 16px -10px rgba(31,107,58,0.3);
+    color:var(--green-900);
+    box-shadow:0 6px 16px -10px rgba(31,77,54,0.3);
     justify-self:end;
   }
 
-  .heading{margin-bottom:44px;}
+  /* =================== 메인 컨텐츠 =================== */
+  .heading{margin-bottom:32px;}
   .heading-row{
     display:flex;
     align-items:center;
     gap:14px;
-    margin:14px 0 18px;
-  }
-  .heading-icon{
-    width:44px;height:44px;
-    border-radius:14px;
-    background:var(--green-pale);
-    color:#1a3f26;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    flex-shrink:0;
+    margin:10px 0 12px;
   }
   .heading h1{
-    font-size:42px;
+    font-size:35px;
     font-weight:800;
-    line-height:1.32;
+    line-height:1.3;
     margin:0;
-    color:black;
+    color:var(--green-900);
     letter-spacing:-0.01em;
   }
   .heading p{
-    font-size:16px;
-    color:var(--text-mid);
+    font-size:15.5px;
+    color:var(--ink-soft);
     margin:0;
   }
 
@@ -109,8 +119,8 @@
     background:#fff;
     border-radius:22px;
     padding:30px;
-    border:1px solid #eef2ec;
-    box-shadow:0 24px 50px -28px rgba(31,107,58,0.2);
+    border:1px solid var(--line);
+    box-shadow:0 12px 30px -15px rgba(31,77,54,0.1);
   }
   .checklist-title{
     display:flex;
@@ -118,6 +128,7 @@
     gap:9px;
     font-size:17px;
     font-weight:800;
+    color:var(--green-900);
     margin-bottom:18px;
   }
   .checklist-meta{
@@ -126,7 +137,7 @@
     justify-content:space-between;
     padding-bottom:16px;
     margin-bottom:16px;
-    border-bottom:1px solid #eef2ec;
+    border-bottom:1px solid var(--line);
   }
   .checklist-meta .date{
     display:flex;
@@ -134,19 +145,20 @@
     gap:7px;
     font-size:14.5px;
     font-weight:600;
-    color:var(--text-mid);
+    color:var(--ink-soft);
   }
   .checklist-meta .progress{
     font-size:14.5px;
     font-weight:700;
-    color:#1a3f26;
+    color:var(--green-900);
   }
 
   .med-item{
     display:flex;
     align-items:center;
     justify-content:space-between;
-    background:var(--cream);
+    background:var(--green-50);
+    border:1px solid var(--line);
     border-radius:14px;
     padding:14px 16px;
     margin-bottom:12px;
@@ -160,7 +172,7 @@
   .med-check{
     width:26px;height:26px;
     border-radius:50%;
-    border:2px solid #cfdccd;
+    border:2px solid var(--line);
     background:#fff;
     flex-shrink:0;
     display:flex;
@@ -171,14 +183,14 @@
     transition:all .15s;
   }
   .med-check.checked{
-    background:var(--green-deep);
-    border-color:var(--green-deep);
+    background:var(--green-700);
+    border-color:var(--green-700);
   }
-  .med-name{font-size:15px; font-weight:700;}
-  .med-sub{font-size:12.5px; color:var(--text-light); margin-top:2px;}
+  .med-name{font-size:15px; font-weight:700; color:var(--ink);}
+  .med-sub{font-size:12.5px; color:var(--ink-soft); margin-top:2px;}
   .med-btn{
-    background:var(--green-pale);
-    color:#1a3f26;
+    background:var(--green-100);
+    color:var(--green-900);
     border:none;
     border-radius:20px;
     padding:9px 16px;
@@ -190,39 +202,40 @@
   }
   .med-btn.done{
     background:#fff;
-    color:var(--text-light);
+    border:1px solid var(--line);
+    color:var(--ink-soft);
   }
-  .med-btn:hover{background:#d9ecd6;}
+  .med-btn:hover:not(.done){background:#d6ebd9;}
 
   .add-btn{
     width:100%;
     margin-top:6px;
     background:transparent;
-    border:1.5px dashed var(--green-line);
+    border:1.5px dashed var(--line);
     border-radius:14px;
     padding:14px;
     font-size:14.5px;
     font-weight:700;
-    color:#1a3f26;
+    color:var(--green-700);
     cursor:pointer;
     transition:background .15s, border-color .15s;
   }
-  .add-btn:hover{background:var(--green-pale); border-color:var(--green-mid);}
+  .add-btn:hover{background:var(--green-100); border-color:var(--green-600);}
 
   .calendar-card{
     flex:1;
     background:#fff;
     border-radius:22px;
     padding:34px 36px;
-    border:1px solid #eef2ec;
-    box-shadow:0 24px 50px -28px rgba(31,107,58,0.2);
+    border:1px solid var(--line);
+    box-shadow:0 12px 30px -15px rgba(31,77,54,0.1);
   }
   .cal-mini-stats{
     display:flex;
     align-items:center;
     margin-bottom:24px;
     padding-bottom:22px;
-    border-bottom:1px solid #eef2ec;
+    border-bottom:1px solid var(--line);
   }
   .mini-stat{
     flex:1;
@@ -235,17 +248,17 @@
   .mini-stat-icon{
     width:40px;height:40px;
     border-radius:12px;
-    background:var(--green-pale);
-    color:#1a3f26;
+    background:var(--green-100);
+    color:var(--green-700);
     display:flex;
     align-items:center;
     justify-content:center;
     flex-shrink:0;
   }
-  .mini-stat-label{font-size:12.5px; color:var(--text-mid); font-weight:600; margin-bottom:2px;}
-  .mini-stat-value{font-size:22px; font-weight:800; color:#1a3f26;}
+  .mini-stat-label{font-size:12.5px; color:var(--ink-soft); font-weight:600; margin-bottom:2px;}
+  .mini-stat-value{font-size:22px; font-weight:800; color:var(--green-900);}
   .mini-stat-value.small{font-size:14.5px; font-weight:700; line-height:1.35;}
-  .mini-divider{width:1px; height:34px; background:#e7ede6; flex-shrink:0;}
+  .mini-divider{width:1px; height:34px; background:var(--line); flex-shrink:0;}
 
   .cal-head{
     display:flex;
@@ -256,29 +269,29 @@
   .cal-head h2{
     font-size:26px;
     font-weight:800;
-    color:#1a3f26;
+    color:var(--green-900);
     margin:0;
   }
   .cal-nav{display:flex; gap:10px;}
   .cal-nav button{
     width:38px;height:38px;
     border-radius:50%;
-    border:1px solid #e2e9e3;
+    border:1px solid var(--line);
     background:#fff;
-    color:var(--text-mid);
+    color:var(--ink-soft);
     cursor:pointer;
     display:flex;
     align-items:center;
     justify-content:center;
     transition:background .15s, border-color .15s;
   }
-  .cal-nav button:hover{background:var(--green-pale); border-color:var(--green-mid); color:#1a3f26;}
+  .cal-nav button:hover{background:var(--green-50); border-color:var(--green-600); color:var(--green-900);}
 
   table{width:100%; border-collapse:collapse;}
   th{
     font-size:14px;
     font-weight:700;
-    color:var(--text-mid);
+    color:var(--ink-soft);
     padding:8px 0 18px;
   }
   td{
@@ -289,16 +302,16 @@
   .day-num{
     font-size:16px;
     font-weight:600;
-    color:var(--text-dark);
+    color:var(--ink);
     display:inline-flex;
     align-items:center;
     justify-content:center;
     width:36px;height:36px;
     border-radius:50%;
   }
-  .day-num.muted{color:#c7d2c5;}
+  .day-num.muted{color:#c4cfc6;}
   .day-num.today{
-    background:var(--green-deep);
+    background:var(--green-700);
     color:#fff;
   }
   .day-check{
@@ -308,14 +321,31 @@
   }
 
   @media (max-width:1000px){
-    .wrap{padding:40px 20px 60px;}
-    .top-row{grid-template-columns:auto 1fr auto; gap:12px;}
+    .wrap{padding:20px 20px 40px;}
+    .top-row{grid-template-columns:auto 1fr auto; gap:12px; margin-bottom:16px;}
+    .eyebrow{font-size:17px;}
     .main-grid{flex-direction:column;}
     .checklist-card{flex:1; width:100%;}
     .heading h1{font-size:30px;}
     .heading-row{flex-wrap:wrap;}
     .cal-mini-stats{flex-wrap:wrap; gap:16px;}
     .mini-divider{display:none;}
+  }
+
+  .delete-btn {
+    margin-left: 6px;
+    padding: 8px 12px;
+    border: 1px solid #e5d5d0;
+    border-radius: 20px;
+    background: #fff;
+    color: #c4502e;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .delete-btn:hover {
+    background: #fff5f2;
   }
 </style>
 </head>
@@ -325,7 +355,6 @@
   <div class="top-row">
     <img src="logo.png" height="100" onclick="location.href='메인페이지.html'" style="cursor:pointer;">
     <div class="eyebrow">
-      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 8C8 10 5.9 16.17 3.82 21.34l1.89.66.95-2.3c.48.17.98.3 1.34.3C19 20 22 3 22 3c-1 2-8 2.25-13 3.25S2 11.5 2 13.5c0 1.43.74 2.84 1.5 3.5C2.74 12.41 6.97 9.13 17 8z"/></svg>
       복용 관리
     </div>
     <div class="pill-tag">
@@ -357,6 +386,10 @@
       <div id="medList"></div>
 
       <button class="add-btn" id="addMedBtn">+ 새 약 추가하기</button>
+
+      <button class="add-btn" id="notificationBtn">
+        🔔 복용 알림 켜기
+      </button>
     </div>
 
     <div class="calendar-card">
@@ -408,167 +441,347 @@
 
 </div>
 
-<script>
-  const todayKey = (d) => {
-    const y = d.getFullYear(), m = String(d.getMonth()+1).padStart(2,'0'), day = String(d.getDate()).padStart(2,'0');
-    return `${y}-${m}-${day}`;
+<script type="module">
+
+  import { medicines, save } from "./app.js";
+  import { setupNotification } from "./notification.js";
+
+  document.getElementById("notificationBtn").onclick =
+    async () => {
+
+      const token = await setupNotification();
+
+      if (token) {
+
+        document.getElementById(
+          "notificationBtn"
+        ).textContent = "🔔 복용 알림 켜짐";
+
+        console.log("알림 설정 완료");
+      }
+    };
+
+
+  /* =========================
+     복용 기록 저장
+  ========================= */
+
+  let checkLog = JSON.parse(
+    localStorage.getItem("checkLog") || "{}"
+  );
+
+  const today = new Date();
+
+  const dateKey = (date) =>
+    `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+
+  const todayKey = dateKey(today);
+
+  checkLog[todayKey] ??= {};
+
+  const saveCheckLog = () => {
+    localStorage.setItem("checkLog", JSON.stringify(checkLog));
   };
 
-  const meds = [
-    { id:'tylenol', name:'타이레놀 500mg · 1정', sub:'오전 08:00 · 식후 30분' },
-    { id:'vitc',     name:'비타민 C 1000mg · 1정', sub:'오후 01:00 · 식후 무관' },
-    { id:'omega3',   name:'오메가3 · 1캡슐', sub:'오후 09:00 · 식후 30분' }
-  ];
 
-  const real = new Date();
-  const checkLog = {};
-  checkLog[todayKey(real)] = {};
+  /* =========================
+     기존 약 데이터 보정
+  ========================= */
 
-  let viewYear = real.getFullYear();
-  let viewMonth = real.getMonth();
+  medicines.forEach((med) => {
+    med.id ??= `med_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
+    med.sub ??= `${med.time || ""} · ${med.dose || ""}`;
+    med.alarmOn ??= true;
+    med.checked ??= false;
+  });
 
-  const weekdayNames = ['일','월','화','수','목','금','토'];
-  const monthNames = ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'];
+  save();
 
-  function isAllChecked(dateKey){
-    const log = checkLog[dateKey];
-    if(!log) return false;
-    return meds.every(m => log[m.id]);
-  }
 
-  function renderMedList(){
-    const list = document.getElementById('medList');
-    list.innerHTML = '';
-    const key = todayKey(real);
-    const log = checkLog[key] || (checkLog[key] = {});
-    let doneCount = 0;
+  /* =========================
+     오늘의 복용 리스트
+  ========================= */
 
-    meds.forEach(med => {
+  function renderMedList() {
+    const list = document.getElementById("medList");
+    const log = checkLog[todayKey];
+
+    list.innerHTML = "";
+
+    if (!medicines.length) {
+      list.innerHTML = `
+        <div class="empty-message">
+          등록된 약이 없습니다.
+        </div>
+      `;
+    }
+
+    let done = 0;
+
+    medicines.forEach((med) => {
       const checked = !!log[med.id];
-      if(checked) doneCount++;
 
-      const row = document.createElement('div');
-      row.className = 'med-item';
-      row.innerHTML = `
+      if (checked) done++;
+
+      const item = document.createElement("div");
+      item.className = "med-item";
+
+      item.innerHTML = `
         <div class="med-left">
-          <span class="med-check ${checked ? 'checked' : ''}" data-id="${med.id}">
-            ${checked ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>' : ''}
+          <span class="med-check ${checked ? "checked" : ""}">
+            ${checked ? "✓" : ""}
           </span>
+
           <div>
             <div class="med-name">${med.name}</div>
-            <div class="med-sub">${med.sub}</div>
+            <div class="med-sub">
+              ${med.sub || `${med.time} · ${med.dose}`}
+            </div>
           </div>
         </div>
-        <button class="med-btn ${checked ? 'done' : ''}" data-id="${med.id}">${checked ? '복용 완료' : '복용하기'}</button>
+
+        <div>
+          <button class="med-btn ${checked ? "done" : ""}">
+            ${checked ? "복용 완료" : "복용하기"}
+          </button>
+
+          <button class="delete-btn">
+            삭제
+          </button>
+        </div>
       `;
-      list.appendChild(row);
+
+      item.querySelector(".med-check")
+        .addEventListener("click", () => toggleMed(med.id));
+
+      item.querySelector(".med-btn")
+        .addEventListener("click", () => toggleMed(med.id));
+      
+      item.querySelector(".delete-btn")
+        .addEventListener("click", () => deleteMed(med.id));
+
+      list.appendChild(item);
     });
 
-    document.getElementById('progressLabel').textContent = `${doneCount}/${meds.length} 완료`;
+    document.getElementById("progressLabel").textContent =
+      `${done}/${medicines.length} 완료`;
 
-    const dateObj = real;
-    const dateStr = `${dateObj.getFullYear()}년 ${dateObj.getMonth()+1}월 ${dateObj.getDate()}일 ${weekdayNames[dateObj.getDay()]}요일`;
-    document.getElementById('todayLabel').innerHTML =
-      `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> ${dateStr}`;
-
-    list.querySelectorAll('.med-check, .med-btn').forEach(el => {
-      el.addEventListener('click', () => toggleMed(el.dataset.id));
-    });
+    document.getElementById("todayLabel").textContent =
+      `${today.getFullYear()}년 ${today.getMonth() + 1}월 ${today.getDate()}일`;
 
     updateStats();
     renderCalendar();
   }
 
-  function toggleMed(id){
-    const key = todayKey(real);
-    const log = checkLog[key] || (checkLog[key] = {});
+
+  /* =========================
+     복용 체크
+  ========================= */
+
+  function toggleMed(id) {
+    const log = checkLog[todayKey];
+
     log[id] = !log[id];
+
+    const med = medicines.find((m) => m.id === id);
+
+    if (med) {
+      med.checked = log[id];
+      if (log[id]) med.alarmOn = false;
+    }
+
+    save();
+    saveCheckLog();
     renderMedList();
   }
 
-  function updateStats(){
-    const key = todayKey(real);
-    const log = checkLog[key] || {};
-    const total = meds.length;
-    const done = meds.filter(m => log[m.id]).length;
-    const rate = total ? Math.round((done/total)*100) : 0;
-    document.getElementById('completionRate').textContent = `${rate}%`;
+  function deleteMed(id) {
+    const med = medicines.find((m) => m.id === id);
+
+    if (!med) return;
+
+    if (!confirm(`"${med.name}"을(를) 삭제할까요?`)) {
+      return;
+    }
+
+    // 약 목록에서 삭제
+    const index = medicines.findIndex((m) => m.id === id);
+    medicines.splice(index, 1);
+
+    // 과거 복용 기록에서도 해당 약 삭제
+    Object.keys(checkLog).forEach((date) => {
+      delete checkLog[date][id];
+    });
+
+    save();
+    saveCheckLog();
+
+    renderMedList();
+  }
+
+
+  /* =========================
+     통계
+  ========================= */
+
+  function updateStats() {
+    const log = checkLog[todayKey];
+
+    const total = medicines.length;
+    const done = medicines.filter((m) => log[m.id]).length;
+
+    const rate = total
+      ? Math.round(done / total * 100)
+      : 0;
+
+    document.getElementById("completionRate").textContent =
+      `${rate}%`;
 
     let streak = 0;
-    let cursor = new Date(real);
-    while(true){
-      const k = todayKey(cursor);
-      if(isAllChecked(k)){
-        streak++;
-        cursor.setDate(cursor.getDate()-1);
-      } else {
-        break;
-      }
+    const cursor = new Date(today);
+
+    while (
+      medicines.length &&
+      medicines.every((m) =>
+        checkLog[dateKey(cursor)]?.[m.id]
+      )
+    ) {
+      streak++;
+      cursor.setDate(cursor.getDate() - 1);
     }
-    document.getElementById('streakDays').textContent = `${streak}일`;
+
+    document.getElementById("streakDays").textContent =
+      `${streak}일`;
   }
 
-  function renderCalendar(){
-    document.getElementById('calTitle').textContent = `${viewYear}년 ${monthNames[viewMonth]}`;
 
-    const firstDay = new Date(viewYear, viewMonth, 1);
-    const startWeekday = firstDay.getDay();
-    const daysInMonth = new Date(viewYear, viewMonth+1, 0).getDate();
-    const daysInPrevMonth = new Date(viewYear, viewMonth, 0).getDate();
+  /* =========================
+     달력
+  ========================= */
 
-    const cells = [];
-    for(let i=0; i<startWeekday; i++){
-      cells.push({ day: daysInPrevMonth - startWeekday + 1 + i, muted:true });
-    }
-    for(let d=1; d<=daysInMonth; d++){
-      cells.push({ day:d, muted:false, dateObj:new Date(viewYear, viewMonth, d) });
-    }
-    while(cells.length % 7 !== 0){
-      cells.push({ day: cells.length - (startWeekday + daysInMonth) + 1, muted:true });
-    }
+  let viewYear = today.getFullYear();
+  let viewMonth = today.getMonth();
 
-    const tbody = document.getElementById('calBody');
-    tbody.innerHTML = '';
-    for(let r=0; r<cells.length/7; r++){
-      const tr = document.createElement('tr');
-      for(let c=0; c<7; c++){
-        const cell = cells[r*7+c];
-        const td = document.createElement('td');
-        if(cell.muted){
-          td.innerHTML = `<span class="day-num muted">${cell.day}</span>`;
+  function renderCalendar() {
+    const title = document.getElementById("calTitle");
+    const body = document.getElementById("calBody");
+
+    title.textContent =
+      `${viewYear}년 ${viewMonth + 1}월`;
+
+    body.innerHTML = "";
+
+    const firstDay =
+      new Date(viewYear, viewMonth, 1).getDay();
+
+    const days =
+      new Date(viewYear, viewMonth + 1, 0).getDate();
+
+    let day = 1;
+
+    for (let week = 0; week < 6 && day <= days; week++) {
+      const tr = document.createElement("tr");
+
+      for (let i = 0; i < 7; i++) {
+        const td = document.createElement("td");
+
+        if (
+          (week === 0 && i < firstDay) ||
+          day > days
+        ) {
+          td.innerHTML = "";
         } else {
-          const isToday = todayKey(cell.dateObj) === todayKey(real);
-          const checked = isAllChecked(todayKey(cell.dateObj));
+          const key = dateKey(
+            new Date(viewYear, viewMonth, day)
+          );
+
+          const checked =
+            medicines.length &&
+            medicines.every((m) => checkLog[key]?.[m.id]);
+
+          const isToday =
+            key === todayKey;
+
           td.innerHTML = `
-            <span class="day-num ${isToday ? 'today' : ''}">${cell.day}</span>
-            <div class="day-check">${checked ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="#e3f3e6"/><path d="M9 12l2 2 4-4" stroke="#2f8f4e" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>' : ''}</div>
+            <span class="day-num ${isToday ? "today" : ""}">
+              ${day}
+            </span>
+
+            <div class="day-check">
+              ${checked ? "✓" : ""}
+            </div>
           `;
+
+          day++;
         }
+
         tr.appendChild(td);
       }
-      tbody.appendChild(tr);
+
+      body.appendChild(tr);
     }
   }
 
-  document.getElementById('prevMonth').addEventListener('click', () => {
+
+  /* =========================
+     달력 이동
+  ========================= */
+
+  document.getElementById("prevMonth").onclick = () => {
     viewMonth--;
-    if(viewMonth < 0){ viewMonth = 11; viewYear--; }
+
+    if (viewMonth < 0) {
+      viewMonth = 11;
+      viewYear--;
+    }
+
     renderCalendar();
-  });
-  document.getElementById('nextMonth').addEventListener('click', () => {
+  };
+
+  document.getElementById("nextMonth").onclick = () => {
     viewMonth++;
-    if(viewMonth > 11){ viewMonth = 0; viewYear++; }
+
+    if (viewMonth > 11) {
+      viewMonth = 0;
+      viewYear++;
+    }
+
     renderCalendar();
-  });
-  document.getElementById('addMedBtn').addEventListener('click', () => {
-    const name = prompt('추가할 약 이름과 용량을 입력하세요 (예: 마그네슘 200mg · 1정)');
-    if(!name) return;
-    const time = prompt('복용 시간을 입력하세요 (예: 오후 07:00 · 식후 30분)') || '';
-    meds.push({ id: 'med_' + Date.now(), name, sub: time });
+  };
+
+
+  /* =========================
+     약 추가
+  ========================= */
+
+  document.getElementById("addMedBtn").onclick = () => {
+    const name = prompt("약 이름을 입력하세요 (예: 타이레놀)");
+    if (!name) return;
+
+    const dose = prompt("복용 양을 입력하세요 (예: 1정)") || "";
+    const time = prompt("복용 시간을 입력하세요 (예: 08:00)") || "";
+
+    medicines.push({
+      id: `med_${Date.now()}`,
+      name: name.trim(),
+      dose: dose.trim(),
+      time: time.trim(),
+      sub: `${time.trim()} · ${dose.trim()}`,
+      alarmOn: true,
+      checked: false
+    });
+
+    save();
     renderMedList();
-  });
+  };
+
+
+  /* =========================
+     시작
+  ========================= */
 
   renderMedList();
 </script>
+
 </body>
 </html>

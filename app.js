@@ -1,5 +1,11 @@
-import { db } from "./firebase.js";
+import { db, messaging } from "./firebase.js";
 import { collection, addDoc, getDocs, updateDoc, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import {
+  getToken,
+  onMessage
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-messaging.js";
+
+const VAPID_KEY = "BLHwltosQGKrNvtCjNbOqrfTGqz3txqfbAzfUbeAmizJ30mSG2al28QJHkOi9u9Lr23Nbr-qEsHFVR3IupUUvJ4";
 
 // =====================
 // 약 검색 API (현지 제공)
@@ -73,21 +79,16 @@ async function deleteMedicineFromFirebase(id) {
 // =====================
 
 // localStorage에서 저장된 약 목록 불러오기 (없으면 빈 배열로 시작)
-let medicines = JSON.parse(localStorage.getItem("medicines")) || [];
+export let medicines = JSON.parse(localStorage.getItem("medicines")) || [];
 
 // 현재 medicines 배열을 localStorage에 저장
-function save() {
+export function save() {
   localStorage.setItem("medicines", JSON.stringify(medicines));
 }
 
 // =====================
 // 알림 권한 설정
 // =====================
-
-// 아직 허용/거부 결정 안 한 경우에만 권한 요청 팝업 표시
-if (Notification.permission === "default") {
-  Notification.requestPermission();
-}
 
 // 1분마다 알림 체크 함수 실행
 setInterval(checkAlarms, 60000);
@@ -175,6 +176,7 @@ async function addMedicine() {
  */
 function displayList() {
   const list = document.getElementById("list");
+  if (!list) return;
   list.innerHTML = "";
 
   for (let i = 0; i < medicines.length; i++) {
@@ -351,40 +353,173 @@ function loadMap() {
     return;
   }
 
-  navigator.geolocation.getCurrentPosition(function (position) {
-    const lat = position.coords.latitude;
-    const lng = position.coords.longitude;
+  navigator.geolocation.getCurrentPosition(
+    function (position) {
 
-    const container = document.getElementById("map");
-    const options = {
-      center: new window.kakao.maps.LatLng(lat, lng),
-      level: 3
-    };
-    const map = new window.kakao.maps.Map(container, options);
+      const lat = position.coords.latitude;
+      const lng = position.coords.longitude;
 
-    const marker = new window.kakao.maps.Marker({
-      position: new window.kakao.maps.LatLng(lat, lng)
-    });
-    marker.setMap(map);
+      const currentPosition =
+        new window.kakao.maps.LatLng(lat, lng);
 
-    const ps = new window.kakao.maps.services.Places();
-    ps.keywordSearch("약국", function (data, status) {
-      if (status === window.kakao.maps.services.Status.OK) {
-        for (let i = 0; i < data.length; i++) {
-          const pharmMarker = new window.kakao.maps.Marker({
-            position: new window.kakao.maps.LatLng(data[i].y, data[i].x),
-            map: map
-          });
-          const infowindow = new window.kakao.maps.InfoWindow({
-            content: `<div style="padding:5px;">${data[i].place_name}</div>`
-          });
-          window.kakao.maps.event.addListener(pharmMarker, "click", function () {
-            infowindow.open(map, pharmMarker);
-          });
+      const container = document.getElementById("map");
+
+      const options = {
+        center: currentPosition,
+        level: 3
+      };
+
+      const map =
+        new window.kakao.maps.Map(container, options);
+
+      // 현재 위치 마커
+      const myMarker =
+        new window.kakao.maps.Marker({
+          position: currentPosition
+        });
+
+      myMarker.setMap(map);
+
+      // 약국 검색
+      const ps =
+        new window.kakao.maps.services.Places();
+
+      ps.keywordSearch(
+        "약국",
+        function (data, status) {
+
+          const list =
+            document.getElementById("pharmacyList");
+
+          if (!list) return;
+
+          list.innerHTML = "";
+
+          // 검색 실패
+          if (
+            status !== window.kakao.maps.services.Status.OK ||
+            !data.length
+          ) {
+            list.innerHTML = `
+              <li>
+                <span class="name">
+                  주변 약국을 찾지 못했습니다.
+                </span>
+              </li>
+            `;
+            return;
+          }
+
+          // 검색된 약국 처리
+          for (let i = 0; i < data.length; i++) {
+
+            const pharmacy = data[i];
+
+            const pharmacyPosition =
+              new window.kakao.maps.LatLng(
+                pharmacy.y,
+                pharmacy.x
+              );
+
+            // 약국 마커
+            const pharmacyMarker =
+              new window.kakao.maps.Marker({
+                position: pharmacyPosition
+              });
+
+            pharmacyMarker.setMap(map);
+
+            // 마커 클릭 시 정보창
+            const infowindow =
+              new window.kakao.maps.InfoWindow({
+                content: `
+                  <div style="
+                    padding:8px 12px;
+                    white-space:nowrap;
+                  ">
+                    ${pharmacy.place_name}
+                  </div>
+                `
+              });
+
+            window.kakao.maps.event.addListener(
+              pharmacyMarker,
+              "click",
+              function () {
+                infowindow.open(map, pharmacyMarker);
+              }
+            );
+
+            // =========================
+            // 지도 아래 약국 리스트
+            // =========================
+
+            const li =
+              document.createElement("li");
+
+            li.innerHTML = `
+              <span class="name">
+                ${pharmacy.place_name}
+              </span>
+
+              <span class="dist">
+                ${pharmacy.distance
+                  ? `${pharmacy.distance}m`
+                  : ""}
+              </span>
+            `;
+
+            // 리스트 클릭 → 지도 이동
+            li.addEventListener("click", function () {
+
+              map.setCenter(pharmacyPosition);
+
+              map.setLevel(3);
+
+              infowindow.open(
+                map,
+                pharmacyMarker
+              );
+            });
+
+            list.appendChild(li);
+          }
+
+        },
+        {
+          location: currentPosition,
+
+          // 현재 위치에서 2km 이내
+          radius: 2000,
+
+          // 최대 5개만 검색
+          size: 5,
+
+          // 가까운 순
+          sort: window.kakao.maps.services.SortBy.DISTANCE
         }
+      );
+    },
+
+    // 위치 정보를 가져오지 못한 경우
+    function (error) {
+
+      console.error("현재 위치를 가져오지 못했습니다.", error);
+
+      const list =
+        document.getElementById("pharmacyList");
+
+      if (list) {
+        list.innerHTML = `
+          <li>
+            <span class="name">
+              현재 위치를 확인할 수 없습니다.
+            </span>
+          </li>
+        `;
       }
-    }, { location: new window.kakao.maps.LatLng(lat, lng) });
-  });
+    }
+  );
 }
 
 window.loadMap = loadMap;
@@ -444,3 +579,52 @@ async function handleSearch() {
 }
 
 window.handleSearch = handleSearch;
+
+// =====================
+// 브라우저 알림 권한
+// =====================
+
+async function requestNotificationPermission() {
+  if (!("Notification" in window)) {
+    alert("이 브라우저는 알림 기능을 지원하지 않습니다.");
+    return false;
+  }
+
+  if (Notification.permission === "granted") {
+    return true;
+  }
+
+  const permission = await Notification.requestPermission();
+
+  if (permission === "granted") {
+    console.log("알림 권한 허용");
+    return true;
+  }
+
+  console.log("알림 권한 거부");
+  return false;
+}
+
+window.requestNotificationPermission = requestNotificationPermission;
+
+async function setupFCM() {
+  try {
+    const permission = await Notification.requestPermission();
+
+    if (permission !== "granted") {
+      console.log("알림 권한이 거부되었습니다.");
+      return;
+    }
+
+    const token = await getToken(messaging, {
+      vapidKey: VAPID_KEY
+    });
+
+    console.log("FCM 토큰:", token);
+
+  } catch (error) {
+    console.error("FCM 토큰 발급 실패:", error);
+  }
+}
+
+setupFCM();
