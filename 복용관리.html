@@ -446,21 +446,47 @@
   import { medicines, save } from "./app.js";
   import { setupNotification } from "./notification.js";
 
-  document.getElementById("notificationBtn").onclick =
-    async () => {
+const notificationBtn =
+  document.getElementById("notificationBtn");
 
-      const token = await setupNotification();
 
-      if (token) {
+/* =========================
+   알림 버튼 상태 설정
+========================= */
 
-        document.getElementById(
-          "notificationBtn"
-        ).textContent = "🔔 복용 알림 켜짐";
+function updateNotificationButton() {
 
-        console.log("알림 설정 완료");
-      }
-    };
+  if (isNotificationEnabled()) {
 
+    notificationBtn.textContent =
+      "🔔 복용 알림 켜짐";
+
+  } else {
+
+    notificationBtn.textContent =
+      "🔔 복용 알림 켜기";
+  }
+}
+
+
+/* =========================
+   알림 설정 버튼
+========================= */
+
+document.getElementById("notificationBtn").onclick =
+  async () => {
+
+    const token = await setupNotification();
+
+    if (token) {
+
+      document.getElementById(
+        "notificationBtn"
+      ).textContent = "🔔 복용 알림 켜짐";
+
+      console.log("알림 설정 완료");
+    }
+  };
 
   /* =========================
      복용 기록 저장

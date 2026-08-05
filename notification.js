@@ -8,7 +8,7 @@ import { app } from "./firebase.js";
 const messaging = getMessaging(app);
 
 // Firebase Console에서 발급받은 Web Push 인증서 키
-const VAPID_KEY = "여기에_네_VAPID_KEY";
+const VAPID_KEY = "BLHwltosQGKrNvtCjNbOqrfTGqz3txqfbAzfUbeAmizJ30mSG2al28QJHkOi9u9Lr23Nbr-qEsHFVR3IupUUvJ4";
 
 export async function setupNotification() {
 
@@ -28,9 +28,15 @@ export async function setupNotification() {
       return null;
     }
 
-    // FCM 토큰 발급
+    const registration = await navigator.serviceWorker.register(
+      "./firebase-messaging-sw.js"
+    );
+
+    await navigator.serviceWorker.ready;
+
     const token = await getToken(messaging, {
-      vapidKey: VAPID_KEY
+      vapidKey: VAPID_KEY,
+      serviceWorkerRegistration: registration
     });
 
     if (!token) {
